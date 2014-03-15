@@ -7,7 +7,10 @@
  */
 package mvc.controller;
 
+import java.io.File;
+
 import java.util.Scanner;
+
 import mvc.model.Pessoa;
 import mvc.view.*;
 
@@ -33,8 +36,8 @@ public class PessoaController {
 	}
 
 	/*
-	 * Metodo criaPessoa <p>Este metodo instancia um objeto do tipo {@link Pessoa.java} e
-	 * recebe, via teclado, seu nome e telefone.</p>
+	 * Metodo criaPessoa <p>Este metodo instancia um objeto do tipo {@link
+	 * Pessoa.java} e recebe, via teclado, seu nome e telefone.</p>
 	 */
 	public void criaPessoa() {
 		pessoa = new Pessoa();
@@ -53,5 +56,35 @@ public class PessoaController {
 	 */
 	public void mostraPessoa() {
 		view.imprimePessoa(pessoa.getNome(), pessoa.getTelefone());
+	}
+
+	/*
+	 * Metodo LerArquivoPessoas <p>Este metodo deve trazer os nomes e telefones
+	 * salvos em arquivo</p>
+	 * 
+	 * @Source http://www.guj.com.br/java/78913-ler-arquivo-utilizando-scanner
+	 */
+	public void LerArquivoPessoas(){
+
+		try {
+			/*
+			 * instancia um objeto do tipo File que recebe o arquivo telefones.txt 
+			 * da pasta arquivos contida na raiz do projeto
+			 */
+			File arquivo = new File(("arquivos\\telefones.txt"));
+			
+			//Instancia um objeto do tipo Scanner que recebe o arquivo como parametro
+			Scanner leitorArquivo = new Scanner(arquivo);
+			
+			//enquanto houver mais uma linha
+			while (leitorArquivo.hasNextLine())
+				System.out.println(leitorArquivo.nextLine());
+
+			//fechamento do leitor
+			leitorArquivo.close();
+		} catch (Exception FileNotFoundException) {
+			System.out.println("Arquivo de telefones não encontrado!");
+		}
+
 	}
 }
