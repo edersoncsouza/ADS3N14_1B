@@ -9,31 +9,73 @@ package mvc.app;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.net.URISyntaxException;
+import java.util.Scanner;
 
 import mvc.controller.PessoaController;
 import mvc.view.ExtendedView;
 
 public class PessoaApp {
 	public static void main(String[] args) throws IOException{
-
-		// instancia o objeto PessoaController
+		menuPrincipal();
+		
+	}	
+	
+	public static void menuPrincipal() {	
+	try {
+		//instancia o objeto PessoaController
 		PessoaController controller = new PessoaController();
 		
-		//chama o metodo criaPessoa
-		controller.criaPessoa();
-		
-		/*
-		 *  define o tipo de visualizacao como um objeto do tipo 
-		 *  ExtendedView - interface PessoaView
-		 */
-		controller.setView(new ExtendedView());
-		
-		// chama o metodo mostraPessoa
-		//controller.mostraPessoa();
-		
-		// chama o metodo LerArquivoPessoas
-		controller.LerArquivoPessoas();
+		//cria o leitor para a operacao de menu
+		Scanner leitor = new Scanner(System.in);
+			int operacao;
 
-	}
+			System.out.println();
+			System.out.println("SISTEMA DE LISTA TELEFONICA");
+			System.out.println("===========================");
+			System.out.println("1 - Listar telefones");
+			System.out.println("2 - Adicionar telefone");
+			System.out.println("0 - Sair do software");
+			System.out.print("Opção: ");
+
+			operacao = (leitor.nextInt());
+
+			switch (operacao) {
+			case 0://sair do software
+				System.out.println("Encerramento do sistema!");
+				System.exit(0);
+				break;
+			case 1://listar telefones
+				/*
+				 *  define o tipo de visualizacao como um objeto do tipo 
+				 *  ExtendedView - interface PessoaView
+				 */
+				controller.setView(new ExtendedView());
+				
+				// chama o metodo mostraPessoa
+				//controller.mostraPessoa();
+				
+				// chama o metodo LerArquivoPessoas
+				controller.LerArquivoPessoas();
+				menuPrincipal();
+				break;
+			case 2://adicionar telefone
+				//chama o metodo criaPessoa
+				controller.criaPessoa();
+				menuPrincipal();
+				break;
+			default:
+				System.out
+						.println("OPÇÃO INVÁLIDA!!! - Pressione qualquer tecla para retornar...");
+				System.in.read();
+				break;
+			}// fim do switch / case
+		}// fim do try
+		catch (Exception e) {
+			System.out
+					.println("OCORREU UM ERRO!!! - Retornando ao menu principal...");
+			menuPrincipal();
+		}
+
+	}// fim do metodo menuPrincipal
+
 }
