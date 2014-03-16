@@ -16,8 +16,7 @@ import mvc.view.ExtendedView;
 
 public class PessoaApp {
 	public static void main(String[] args) throws IOException{
-		menuPrincipal();
-		
+		menuPrincipal();		
 	}	
 	
 	public static void menuPrincipal() {	
