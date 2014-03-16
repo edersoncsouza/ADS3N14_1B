@@ -7,8 +7,10 @@
  */
 package mvc.controller;
 
+import java.io.BufferedWriter;
 import java.io.File;
-
+import java.io.FileWriter;
+import java.io.IOException;
 import java.util.Scanner;
 
 import mvc.model.Pessoa;
@@ -37,16 +39,35 @@ public class PessoaController {
 
 	/*
 	 * Metodo criaPessoa <p>Este metodo instancia um objeto do tipo {@link
-	 * Pessoa.java} e recebe, via teclado, seu nome e telefone.</p>
+	 * Pessoa.java} e recebe, via teclado, seu nome e telefone,
+	 * salvando em arquivo ao sair.</p>
+	 * @Source http://www.guj.com.br/java/124651-salvar-uma-string-em-um-arquivo-txt-com-percistencia-alguem-pode-me-ajudarresolvido
 	 */
-	public void criaPessoa() {
-		pessoa = new Pessoa();
+	public void criaPessoa() throws IOException{
+		//pessoa = new Pessoa();
 
+		/*
 		System.out.println("Digite o nome da pessoa: ");
 		pessoa.setNome(leitor.next());
 
 		System.out.println("Digite o telefone da pessoa: ");
 		pessoa.setTelefone(leitor.next());
+		*/
+		
+		//Abre arquivo para escrita
+		BufferedWriter gravador = new BufferedWriter(new FileWriter("arquivos\\telefones.txt",true));
+		
+		System.out.println("Digite o nome da pessoa: ");
+		gravador.write(leitor.next());
+		
+		gravador.newLine();//passa para a proxima linha
+		
+		System.out.println("Digite o telefone da pessoa: ");
+		gravador.write(leitor.next());
+		
+		gravador.newLine();//passa para a proxima linha
+		gravador.flush();
+		gravador.close();
 
 	}
 
