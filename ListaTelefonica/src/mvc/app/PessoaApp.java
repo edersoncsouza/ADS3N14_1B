@@ -34,7 +34,7 @@ public class PessoaApp {
 			System.out.println("1 - Listar telefones");
 			System.out.println("2 - Adicionar telefone");
 			System.out.println("0 - Sair do software");
-			System.out.print("Opção: ");
+			System.out.print("Opcao: ");
 
 			operacao = (leitor.nextInt());
 
@@ -64,7 +64,7 @@ public class PessoaApp {
 				break;
 			default:
 				System.out
-						.println("OPÇÃO INVÁLIDA!!! - Pressione qualquer tecla para retornar...");
+						.println("OPCAO INVALIDA!!! - Pressione qualquer tecla para retornar...");
 				System.in.read();
 				break;
 			}// fim do switch / case

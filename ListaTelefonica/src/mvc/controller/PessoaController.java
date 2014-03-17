@@ -22,6 +22,8 @@ public class PessoaController{
 	private PessoaView view;
 	private Pessoa pessoa;
 	Scanner leitor = new Scanner(System.in);
+	String caminho = "arquivos/telefones.txt";//localizacao relativa do arquivo no projeto
+	String sO = System.getProperty("os.name").toLowerCase();//sistema operacional em que esta rodando
 
 	// construtor que inicializa o tipo de visao padrao como Extendedview
 	public PessoaController() {
@@ -48,13 +50,19 @@ public class PessoaController{
 	 * txt-com-percistencia-alguem-pode-me-ajudarresolvido
 	 */
 	public void criaPessoa() throws IOException {
-
+		
+		// Identifica se o sistema operacional que esta rodando e windows
+		if (sO.indexOf("win") >= 0) {
+			// Substitui contrabarras por barras
+			caminho = caminho.replace("\\", "/");
+		}
+		
 		// Abre arquivo para escrita
 		BufferedWriter gravador = new BufferedWriter(new FileWriter(
-				"arquivos\\telefones.txt", true));
-
+				caminho, true));
+		
 		System.out.println("Digite o nome da pessoa: ");
-		gravador.write(leitor.next());
+		gravador.write((leitor.next()).toUpperCase());//converte para maiusc e grava
 
 		gravador.newLine();// passa para a proxima linha
 
@@ -86,11 +94,18 @@ public class PessoaController{
 		ListaOrdenada<String> listaTelefonica = new ListaOrdenada<String>();
 	
 		try {
+		
+			// Identifica se o sistema operacional que esta rodando e windows
+			if (sO.indexOf("win") >= 0) {
+				// Substitui contrabarras por barras
+				caminho = caminho.replace("\\", "/");
+			}
+			
 			/*
 			 * instancia um objeto do tipo File que recebe o arquivo
 			 * telefones.txt da pasta arquivos contida na raiz do projeto
 			 */
-			File arquivo = new File(("arquivos\\telefones.txt"));
+			File arquivo = new File((caminho));
 
 			// Instancia um objeto do tipo Scanner que recebe o arquivo como parametro
 			Scanner leitorArquivo = new Scanner(arquivo);
@@ -121,7 +136,7 @@ public class PessoaController{
 			leitorArquivo.close();// fechamento do leitor
 			
 		} catch (Exception FileNotFoundException) {
-			System.out.println("Arquivo de telefones não encontrado!");
+			System.out.println("Arquivo de telefones nao encontrado!");
 		} 
 
 	}//fim do metodo lerArquivoPessoas

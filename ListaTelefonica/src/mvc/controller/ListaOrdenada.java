@@ -103,11 +103,8 @@ private Nodo<T> procuraNodo(T data) {
 			if (anterior == tail)//se o anterior for a cauda
 				tail = novo;//o novo sera definido como cauda
 		} else {//senao
-<<<<<<< HEAD
 			if (tail != null) {// anterior nulo e tail existe = 1 ou mais elementos, adic inicio
-=======
 			if (tail != null) {//se a cauda nao for nula (lista vazia)
->>>>>>> 24e6d75d5174e4a838afc8ab832f6e66f2bf2d6c
 				tail.setNext(novo);//define como proximo da cauda o nodo novo
 			} else {//senao (lista esta vazia)
 				head = novo;//define como head o nodo novo
