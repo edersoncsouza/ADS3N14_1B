@@ -83,6 +83,30 @@ public class PessoaController{
 		view.imprimePessoa(pessoa.getNome(), pessoa.getTelefone());
 	}
 
+	public void buscaPessoa(){
+		// criar lista
+		ListaOrdenada<String> listaFiltrada = new ListaOrdenada<String>();
+		
+		System.out.println("Digite a inicial do contato a procurar: ");//recebe a inicial
+		String stringInicial=leitor.next();//armazena na string
+		
+		//cria o nodo novo com o conteudo do contato encontrado por procuraNodoInicial
+		Nodo<String> novo = new Nodo<String>(listaFiltrada.procuraNodoInicial(stringInicial));
+		
+		//insere o nodo na listraFiltrada
+		listaFiltrada.insert(novo);
+		
+		while(novo.getData()!=null){
+			
+			//cria o nodo novo com o conteudo do contato encontrado por procuraNodoInicial
+			novo = new Nodo<String>(listaFiltrada.procuraNodoInicial(stringInicial));
+			
+			//insere o nodo na listraFiltrada
+			listaFiltrada.insert(novo);
+		
+		}
+		listaFiltrada.print();
+	}
 	/*
 	 * Metodo LerArquivoPessoas <p>Este metodo deve trazer os nomes e telefones
 	 * salvos em arquivo</p>
@@ -105,7 +129,7 @@ public class PessoaController{
 			 * instancia um objeto do tipo File que recebe o arquivo
 			 * telefones.txt da pasta arquivos contida na raiz do projeto
 			 */
-			File arquivo = new File((caminho));
+			File arquivo = new File(caminho);
 
 			// Instancia um objeto do tipo Scanner que recebe o arquivo como parametro
 			Scanner leitorArquivo = new Scanner(arquivo);
@@ -122,13 +146,11 @@ public class PessoaController{
 					contato = contato + leitorArquivo.nextLine()+"\n";
 				}
 				
-				//System.out.println(contato+"\n");
+				Nodo<String> novo = new Nodo<String>(contato);//cria o nodo novo com o conteudo do contato
 				
-				Nodo<String> novo = new Nodo<String>(contato);
+				listaTelefonica.insert(novo);//insere o nodo na lista
 				
-				listaTelefonica.insert(novo);
-				
-				contato="";
+				contato="";//esvazia a string de concatenacao
 				
 			}//fim do while hasNextLine
 			
