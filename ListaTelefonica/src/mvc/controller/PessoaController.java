@@ -17,7 +17,7 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.util.Scanner;
 
-public class PessoaController {
+public class PessoaController{
 
 	private PessoaView view;
 	private Pessoa pessoa;
