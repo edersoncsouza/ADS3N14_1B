@@ -8,7 +8,7 @@
 package mvc.controller;
 
 import mvc.model.Pessoa;
-import mvc.model.Nodo;
+import mvc.model.NodoD;
 import mvc.view.*;
 
 import java.io.BufferedWriter;
@@ -85,21 +85,21 @@ public class PessoaController{
 
 	public void buscaPessoa(){
 		// criar lista
-		ListaOrdenada<String> listaFiltrada = new ListaOrdenada<String>();
+		ListaDuplamenteEncadeada<String> listaFiltrada = new ListaDuplamenteEncadeada<String>();
 		
 		System.out.println("Digite a inicial do contato a procurar: ");//recebe a inicial
 		String stringInicial=leitor.next();//armazena na string
 		
 		//cria o nodo novo com o conteudo do contato encontrado por procuraNodoInicial
-		Nodo<String> novo = new Nodo<String>(listaFiltrada.procuraNodoInicial(stringInicial));
+		NodoD<String> novo = new NodoD<String>(listaFiltrada.procuraNodoInicial(stringInicial));
 		
 		//insere o nodo na listraFiltrada
 		listaFiltrada.insert(novo);
 		
-		while(novo.getData()!=null){
+		while(novo.getDado()!=null){
 			
 			//cria o nodo novo com o conteudo do contato encontrado por procuraNodoInicial
-			novo = new Nodo<String>(listaFiltrada.procuraNodoInicial(stringInicial));
+			novo = new NodoD<String>(listaFiltrada.procuraNodoInicial(stringInicial));
 			
 			//insere o nodo na listraFiltrada
 			listaFiltrada.insert(novo);
@@ -115,7 +115,7 @@ public class PessoaController{
 	 */
 	public void LerArquivoPessoas() {
 		// criar lista
-		ListaOrdenada<String> listaTelefonica = new ListaOrdenada<String>();
+		ListaDuplamenteEncadeada<String> listaTelefonica = new ListaDuplamenteEncadeada<String>();
 	
 		try {
 		
@@ -146,7 +146,8 @@ public class PessoaController{
 					contato = contato + leitorArquivo.nextLine()+"\n";
 				}
 				
-				Nodo<String> novo = new Nodo<String>(contato);//cria o nodo novo com o conteudo do contato
+				NodoD<String> novo = new NodoD<String>(contato);//cria o nodo novo com o conteudo do contato
+				//NodoD(NodoD prev, NodoD next, T i)
 				
 				listaTelefonica.insert(novo);//insere o nodo na lista
 				

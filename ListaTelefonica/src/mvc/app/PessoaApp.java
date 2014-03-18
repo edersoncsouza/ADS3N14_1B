@@ -33,6 +33,8 @@ public class PessoaApp {
 			System.out.println("===========================");
 			System.out.println("1 - Listar telefones");
 			System.out.println("2 - Adicionar telefone");
+			System.out.println("3 - Pesquisar telefone");
+			System.out.println("======================");
 			System.out.println("0 - Sair do software");
 			System.out.print("Opcao: ");
 
@@ -60,6 +62,11 @@ public class PessoaApp {
 			case 2://adicionar telefone
 				//chama o metodo criaPessoa
 				controller.criaPessoa();
+				menuPrincipal();
+				break;
+			case 3://pesquisar telefone
+				//chama o metodo criaPessoa
+				controller.buscaPessoa();
 				menuPrincipal();
 				break;
 			default:

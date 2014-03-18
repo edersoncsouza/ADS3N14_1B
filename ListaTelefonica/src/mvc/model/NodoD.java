@@ -5,17 +5,16 @@ public class NodoD<T> {
 	private T  dado;
 	private NodoD<T> prev, next;
 
-	public NodoD(NodoD prev, NodoD next, T i)
+	//public NodoD(NodoD prev, NodoD next, T i)
+	public NodoD(T i)
 	{
-		this.prev = prev;
-		this.next = next;
 		this.dado = i;
 	}
 
 	public T getDado() {
 		return dado;
 	}
-
+	
 	public void setDado(T dado) {
 		this.dado = dado;
 	}

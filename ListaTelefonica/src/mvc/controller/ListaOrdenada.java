@@ -1,7 +1,5 @@
 package mvc.controller;
 
-import java.util.Scanner;
-
 import mvc.model.Nodo;
 
 public class ListaOrdenada<T extends Comparable<T>> extends ListaEncadeada<T> {
