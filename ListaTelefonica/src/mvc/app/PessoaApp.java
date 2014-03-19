@@ -11,10 +11,12 @@ package mvc.app;
 import java.io.IOException;
 import java.util.Scanner;
 
+import mvc.controller.ListaDuplamenteEncadeada;
 import mvc.controller.PessoaController;
 import mvc.view.ExtendedView;
 
 public class PessoaApp {
+	
 	public static void main(String[] args) throws IOException{
 		menuPrincipal();		
 	}	
@@ -23,6 +25,10 @@ public class PessoaApp {
 	try {
 		//instancia o objeto PessoaController
 		PessoaController controller = new PessoaController();
+		ListaDuplamenteEncadeada<String> lista;
+		
+		//armazena os contatos na lista
+		lista = (controller.LerArquivoPessoasRetorno());
 		
 		//cria o leitor para a operacao de menu
 		Scanner leitor = new Scanner(System.in);
@@ -51,12 +57,7 @@ public class PessoaApp {
 				 *  ExtendedView - interface PessoaView
 				 */
 				controller.setView(new ExtendedView());
-				
-				// chama o metodo mostraPessoa
-				//controller.mostraPessoa();
-				
-				// chama o metodo LerArquivoPessoas
-				controller.LerArquivoPessoas();
+				lista.print();
 				menuPrincipal();
 				break;
 			case 2://adicionar telefone
@@ -65,7 +66,6 @@ public class PessoaApp {
 				menuPrincipal();
 				break;
 			case 3://pesquisar telefone
-				//chama o metodo criaPessoa
 				controller.buscaPessoa();
 				menuPrincipal();
 				break;

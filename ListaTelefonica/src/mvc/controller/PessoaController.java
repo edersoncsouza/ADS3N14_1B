@@ -17,13 +17,18 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.util.Scanner;
 
-public class PessoaController{
+public class PessoaController {
 
 	private PessoaView view;
 	private Pessoa pessoa;
 	Scanner leitor = new Scanner(System.in);
-	String caminho = "arquivos/telefones.txt";//localizacao relativa do arquivo no projeto
-	String sO = System.getProperty("os.name").toLowerCase();//sistema operacional em que esta rodando
+	String caminho = "arquivos/telefones.txt";// localizacao relativa do arquivo
+												// no projeto
+	String sO = System.getProperty("os.name").toLowerCase();// sistema
+															// operacional em
+															// que esta rodando
+	ListaDuplamenteEncadeada<String> listaTelefonica = new ListaDuplamenteEncadeada<String>(); // criar
+																								// lista
 
 	// construtor que inicializa o tipo de visao padrao como Extendedview
 	public PessoaController() {
@@ -50,19 +55,20 @@ public class PessoaController{
 	 * txt-com-percistencia-alguem-pode-me-ajudarresolvido
 	 */
 	public void criaPessoa() throws IOException {
-		
+
 		// Identifica se o sistema operacional que esta rodando e windows
 		if (sO.indexOf("win") >= 0) {
 			// Substitui contrabarras por barras
 			caminho = caminho.replace("\\", "/");
 		}
-		
+
 		// Abre arquivo para escrita
-		BufferedWriter gravador = new BufferedWriter(new FileWriter(
-				caminho, true));
-		
+		BufferedWriter gravador = new BufferedWriter(new FileWriter(caminho,
+				true));
+
 		System.out.println("Digite o nome da pessoa: ");
-		gravador.write((leitor.next()).toUpperCase());//converte para maiusc e grava
+		gravador.write((leitor.next()).toUpperCase());// converte para maiusc e
+														// grava
 
 		gravador.newLine();// passa para a proxima linha
 
@@ -83,42 +89,65 @@ public class PessoaController{
 		view.imprimePessoa(pessoa.getNome(), pessoa.getTelefone());
 	}
 
-	public void buscaPessoa(){
-		// criar lista
+	public void buscaPessoa() {
+		NodoD<String> novo = listaTelefonica.head;
+		// criar lista filtrada
 		ListaDuplamenteEncadeada<String> listaFiltrada = new ListaDuplamenteEncadeada<String>();
-		
-		System.out.println("Digite a inicial do contato a procurar: ");//recebe a inicial
-		String stringInicial=leitor.next();//armazena na string
-		
-		//armazena o contato encontrado por procuraNodoInicial
-		String contatoEncontrado = listaFiltrada.procuraNodoInicial(stringInicial).toString();
-		
-		//imprime o conteudo do contatoEncontrado para verificar
-		System.out.println(contatoEncontrado);
-		
-		//cria o nodo novo com o conteudo do contato encontrado por procuraNodoInicial
-		//.tostring no final
-		NodoD<String> novo = new NodoD<String>(listaFiltrada.procuraNodoInicial(contatoEncontrado).toString());	
-		
-		//imprime o conteudo do nodo para verificar
-		System.out.println(novo.toString());
-		
-		//insere o nodo na listraFiltrada
-		listaFiltrada.insert(novo);
-		
-		while(novo.getDado()!=null){
+		String contatoEncontrado;
+		String letraInicial;
+
+		System.out.println("Digite a inicial do contato a procurar: ");
+		letraInicial = leitor.next();// armazena na string
+
+		while (novo.getDado() != null) {
+			// atributo recebe o primeiro caracter da transf em string do dado
+			String inicialContato = (novo.getDado().toString().substring(0, 1));
 			
-			//cria o nodo novo com o conteudo do contato encontrado por procuraNodoInicial
-			//.tostring no final
-			novo = new NodoD<String>(listaFiltrada.procuraNodoInicial(stringInicial).toString());
+			System.out.println("Contato lido:" + novo.getDado().toString());
 			
-			//insere o nodo na listraFiltrada
-			listaFiltrada.insert(novo);
-		
+			if (inicialContato.equals(letraInicial)) {
+				contatoEncontrado = novo.getDado().toString();
+				// impressao de verificacao1
+				System.out.println("Retornando encontrado: " + "\n"
+						+ contatoEncontrado);
+
+				novo = new NodoD<String>(contatoEncontrado);
+				// insere o nodo na listraFiltrada
+				listaFiltrada.insert(novo);
+				
+			}
+			novo=novo.getNext();
 		}
-		//imprime a lista filtrada
+		// imprime a lista filtrada
 		listaFiltrada.print();
 	}
+
+	public String trazElemento(String inicialBusca) {
+
+		NodoD<String> nodo = listaTelefonica.head;
+		NodoD<String> anterior = null;
+		String contatoEncontrado = "";
+
+		while (nodo != null) {
+			// atributo recebe o primeiro caracter da transf em string do dado
+			// do nodo
+			String inicialContato = (nodo.getDado().toString().substring(0, 1));
+
+			if (inicialContato.equals(inicialBusca)) {
+				contatoEncontrado = nodo.getDado().toString();
+
+				// impressao de verificacao1
+				System.out.println("Retornando encontrado: " + "\n"
+						+ contatoEncontrado);
+
+				return contatoEncontrado;
+			}
+		}// fim do while
+
+		return "Nada encontrado";
+
+	}
+
 	/*
 	 * Metodo LerArquivoPessoas <p>Este metodo deve trazer os nomes e telefones
 	 * salvos em arquivo</p>
@@ -126,54 +155,110 @@ public class PessoaController{
 	 * @Source http://www.guj.com.br/java/78913-ler-arquivo-utilizando-scanner
 	 */
 	public void LerArquivoPessoas() {
-		// criar lista
-		ListaDuplamenteEncadeada<String> listaTelefonica = new ListaDuplamenteEncadeada<String>();
-	
+
 		try {
-		
+
 			// Identifica se o sistema operacional que esta rodando e windows
 			if (sO.indexOf("win") >= 0) {
 				// Substitui contrabarras por barras
 				caminho = caminho.replace("\\", "/");
 			}
-			
+
 			/*
 			 * instancia um objeto do tipo File que recebe o arquivo
 			 * telefones.txt da pasta arquivos contida na raiz do projeto
 			 */
 			File arquivo = new File(caminho);
 
-			// Instancia um objeto do tipo Scanner que recebe o arquivo como parametro
+			// Instancia um objeto do tipo Scanner que recebe o arquivo como
+			// parametro
 			Scanner leitorArquivo = new Scanner(arquivo);
-			
-			//cria o atributo que concatenara o conteudo do nodo
-			String contato="";
-			
-			System.out.println();//linha em branco meramente decorativa
-			
-			while (leitorArquivo.hasNextLine()) {// enquanto houver uma proxima linha
 
-				//for para concatenar nome e telefone antes de armazenar
-				for(int i=0;i<=1;i++){
-					contato = contato + leitorArquivo.nextLine()+"\n";
+			// cria o atributo que concatenara o conteudo do nodo
+			String contato = "";
+
+			System.out.println();// linha em branco meramente decorativa
+
+			while (leitorArquivo.hasNextLine()) {// enquanto houver uma proxima
+													// linha
+
+				// for para concatenar nome e telefone antes de armazenar
+				for (int i = 0; i <= 1; i++) {
+					contato = contato + leitorArquivo.nextLine() + "\n";
 				}
-				
-				NodoD<String> novo = new NodoD<String>(contato);//cria o nodo novo com o conteudo do contato
-				//NodoD(NodoD prev, NodoD next, T i)
-				
-				listaTelefonica.insert(novo);//insere o nodo na lista
-				
-				contato="";//esvazia a string de concatenacao
-				
-			}//fim do while hasNextLine
-			
-			listaTelefonica.print();//manda imprimir a lista
+
+				NodoD<String> novo = new NodoD<String>(contato);// cria o nodo
+																// novo com o
+																// conteudo do
+																// contato
+
+				listaTelefonica.insert(novo);// insere o nodo na lista
+
+				contato = "";// esvazia a string de concatenacao
+
+			}// fim do while hasNextLine
+
+			listaTelefonica.print();// manda imprimir a lista
 			leitorArquivo.close();// fechamento do leitor
-			
+
 		} catch (Exception FileNotFoundException) {
 			System.out.println("Arquivo de telefones nao encontrado!");
-		} 
+		}
 
-	}//fim do metodo lerArquivoPessoas
-	
-}//fim da classe PessoaController
+	}// fim do metodo lerArquivoPessoas
+
+	public ListaDuplamenteEncadeada<String> LerArquivoPessoasRetorno() {
+
+		try {
+
+			// Identifica se o sistema operacional que esta rodando e windows
+			if (sO.indexOf("win") >= 0) {
+				// Substitui contrabarras por barras
+				caminho = caminho.replace("\\", "/");
+			}
+
+			/*
+			 * instancia um objeto do tipo File que recebe o arquivo
+			 * telefones.txt da pasta arquivos contida na raiz do projeto
+			 */
+			File arquivo = new File(caminho);
+
+			// Instancia um objeto do tipo Scanner que recebe o arquivo como
+			// parametro
+			Scanner leitorArquivo = new Scanner(arquivo);
+
+			// cria o atributo que concatenara o conteudo do nodo
+			String contato = "";
+
+			System.out.println();// linha em branco meramente decorativa
+
+			while (leitorArquivo.hasNextLine()) {// enquanto houver uma proxima
+													// linha
+
+				// for para concatenar nome e telefone antes de armazenar
+				for (int i = 0; i <= 1; i++) {
+					contato = contato + leitorArquivo.nextLine() + "\n";
+				}
+
+				NodoD<String> novo = new NodoD<String>(contato);// cria o nodo
+																// novo com o
+																// conteudo do
+																// contato
+
+				listaTelefonica.insert(novo);// insere o nodo na lista
+
+				contato = "";// esvazia a string de concatenacao
+
+			}// fim do while hasNextLine
+
+			// listaTelefonica.print();//manda imprimir a lista
+			leitorArquivo.close();// fechamento do leitor
+
+		} catch (Exception FileNotFoundException) {
+			System.out.println("Arquivo de telefones nao encontrado!");
+		}
+
+		return listaTelefonica;
+	}// fim do metodo lerArquivoPessoas
+
+}// fim da classe PessoaController
