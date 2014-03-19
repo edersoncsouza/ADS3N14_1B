@@ -4,6 +4,7 @@
  * @Source http://treedevelopment.forumeiros.com/t10-modelo-para-implementacao-da-lista-duplamente-encadeada-em-java
  * @Source http://www.caelum.com.br/apostila-java-estrutura-dados/listas-ligadas/#5-17-adicionando-no-comeco-da-lista
  * @Source http://marciohbe.wordpress.com/2009/11/22/lista-duplamente-encadeada-em-java/
+ * @Source http://wiki.icmc.usp.br/images/c/cf/ListaDupEncad.pdf
  */
 package mvc.controller;
 
@@ -38,8 +39,44 @@ public class ListaDuplamenteEncadeada<T extends Comparable<T>> {
 		// return nodo;
 		return anterior;
 	}
-	
 
+	//public String procuraNodoInicial(T data) {
+	public NodoD<T> procuraNodoInicial(T data) {
+		NodoD<T> nodo = head;
+		NodoD<T> anterior = null;
+		
+		//garante que seja procurado apenas pelo primeiro caractere recebido
+		String inicialBusca = data.toString().substring(0, 1);
+		
+		//impressao de teste de refiltragem
+		System.out.println("Filtrado no procuraNodoInicial: " + inicialBusca);
+		
+		
+		System.out.println("Dados do nodo: " + head.getDado().toString());
+		
+		while (nodo != null) {
+			
+			// atributo recebe o primeiro caracter da transf em string do dado do nodo
+			String inicialContato = nodo.getDado().toString().substring(0, 1);
+			
+			//impressao de teste de filtragem nos nodos da lista enquanto percorre
+			System.out.println("Inicial do nodo em leitura: " + inicialContato);
+
+			if (inicialContato == inicialBusca) {
+				//impressao de verificacao1
+				System.out.println("Retornando encontrado: " + anterior.toString());
+				return nodo;//.getDado();//.toString();
+			} else {
+				anterior = nodo;
+				nodo = nodo.getNext();
+			}
+		}//fim do while
+
+		//impressao de verificacao 2
+		//System.out.println("Retornando nao encontrado: " + anterior.toString());
+		return anterior;//.getDado()//.toString();
+	}
+	
 	public void insert(NodoD<T> novo) {
 		// define como anterior o  encontrado ou o proprio
 		NodoD<T> anterior = procuraNodo(novo.getDado());
@@ -59,32 +96,6 @@ public class ListaDuplamenteEncadeada<T extends Comparable<T>> {
 			tail = novo;// define como tail o nodo novo
 		}
 	}
-
-	
-	public String procuraNodoInicial(T data) {
-		NodoD<T> nodo = head;
-		NodoD<T> anterior = null;
-		char inicialBusca = data.toString().charAt(1);
-
-		while (nodo != null) {
-			// atributo recebe o primeiro caracter da transf em string do dado
-			// do nodo
-			char inicialContato = nodo.getDado().toString().charAt(1);
-
-			if (inicialContato == inicialBusca) {
-				// System.out.println("Sou o procuraNodo, valores iguais, estou retornando o nodo:"
-				// + nodo);
-				return nodo.getDado().toString();
-			} else {
-				anterior = nodo;
-				nodo = nodo.getNext();
-			}
-
-		}//fim do while
-
-		return anterior.getDado().toString();
-	}
-	
 	
 	/*
 	 * Metodo print

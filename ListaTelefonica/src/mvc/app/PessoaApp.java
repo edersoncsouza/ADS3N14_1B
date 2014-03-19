@@ -79,6 +79,7 @@ public class PessoaApp {
 		catch (Exception e) {
 			System.out
 					.println("OCORREU UM ERRO!!! - Retornando ao menu principal...");
+			e.printStackTrace();
 			menuPrincipal();
 		}
 

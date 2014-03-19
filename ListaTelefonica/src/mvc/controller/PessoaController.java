@@ -90,8 +90,18 @@ public class PessoaController{
 		System.out.println("Digite a inicial do contato a procurar: ");//recebe a inicial
 		String stringInicial=leitor.next();//armazena na string
 		
+		//armazena o contato encontrado por procuraNodoInicial
+		String contatoEncontrado = listaFiltrada.procuraNodoInicial(stringInicial).toString();
+		
+		//imprime o conteudo do contatoEncontrado para verificar
+		System.out.println(contatoEncontrado);
+		
 		//cria o nodo novo com o conteudo do contato encontrado por procuraNodoInicial
-		NodoD<String> novo = new NodoD<String>(listaFiltrada.procuraNodoInicial(stringInicial));
+		//.tostring no final
+		NodoD<String> novo = new NodoD<String>(listaFiltrada.procuraNodoInicial(contatoEncontrado).toString());	
+		
+		//imprime o conteudo do nodo para verificar
+		System.out.println(novo.toString());
 		
 		//insere o nodo na listraFiltrada
 		listaFiltrada.insert(novo);
@@ -99,12 +109,14 @@ public class PessoaController{
 		while(novo.getDado()!=null){
 			
 			//cria o nodo novo com o conteudo do contato encontrado por procuraNodoInicial
-			novo = new NodoD<String>(listaFiltrada.procuraNodoInicial(stringInicial));
+			//.tostring no final
+			novo = new NodoD<String>(listaFiltrada.procuraNodoInicial(stringInicial).toString());
 			
 			//insere o nodo na listraFiltrada
 			listaFiltrada.insert(novo);
 		
 		}
+		//imprime a lista filtrada
 		listaFiltrada.print();
 	}
 	/*
