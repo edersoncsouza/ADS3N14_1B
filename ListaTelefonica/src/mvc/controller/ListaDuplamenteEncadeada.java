@@ -66,7 +66,7 @@ public class ListaDuplamenteEncadeada<T extends Comparable<T>> {
 			// percorre
 			System.out.println("Inicial do nodo em leitura: " + inicialContato);
 
-			if (inicialContato == inicialBusca) {
+			if (inicialContato.equals(inicialBusca)) {
 				// impressao de verificacao1
 				System.out.println("Retornando encontrado: "
 						+ anterior.toString());

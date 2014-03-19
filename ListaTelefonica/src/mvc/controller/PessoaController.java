@@ -99,7 +99,11 @@ public class PessoaController {
 		System.out.println("Digite a inicial do contato a procurar: ");
 		letraInicial = leitor.next();// armazena na string
 
-		while (novo.getDado() != null) {
+		
+		System.out.println(novo.getDado());
+		
+		//while (novo.getDado() != null) {
+		while (novo != null) {
 			// atributo recebe o primeiro caracter da transf em string do dado
 			String inicialContato = (novo.getDado().toString().substring(0, 1));
 			
