@@ -136,10 +136,16 @@ public class ListaDuplamenteEncadeada<T extends Comparable<T>> {
 	 */
 	public void print() {
 		NodoD<T> elem = head;
+		/*
 		do {
 			System.out.println(elem.getDado());
 			elem = elem.getNext();
 		} while (elem != null);
+		*/
+		while (elem != null){
+			System.out.println(elem.getDado());
+			elem = elem.getNext();
+		}
 	}
 
 

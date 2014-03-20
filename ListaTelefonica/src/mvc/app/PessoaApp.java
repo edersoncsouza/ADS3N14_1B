@@ -66,7 +66,12 @@ public class PessoaApp {
 				menuPrincipal();
 				break;
 			case 3://pesquisar telefone
-				controller.buscaPessoa();
+				try{
+				String pessoa = controller.buscaPessoa().getDado();
+				System.out.println(pessoa);
+				}catch(Exception e){
+					System.out.println("Não foi encontrado nenhum contato com essa letra inicial");
+				}
 				menuPrincipal();
 				break;
 			default:
@@ -79,7 +84,7 @@ public class PessoaApp {
 		catch (Exception e) {
 			System.out
 					.println("OCORREU UM ERRO!!! - Retornando ao menu principal...");
-			e.printStackTrace();
+			//e.printStackTrace();
 			menuPrincipal();
 		}
 

@@ -89,41 +89,34 @@ public class PessoaController {
 		view.imprimePessoa(pessoa.getNome(), pessoa.getTelefone());
 	}
 
-	public void buscaPessoa() {
-		NodoD<String> novo = listaTelefonica.head;
-		// criar lista filtrada
-		ListaDuplamenteEncadeada<String> listaFiltrada = new ListaDuplamenteEncadeada<String>();
+	//public void buscaPessoa() {
+	public NodoD<String> buscaPessoa() {
+		NodoD<String> novo = listaTelefonica.head;//define o inicio da pesquisa para a lista completa
+		//ListaDuplamenteEncadeada<String> listaFiltrada = new ListaDuplamenteEncadeada<String>();// criar lista filtrada
 		String contatoEncontrado;
 		String letraInicial;
+		//boolean achei=false;
 
 		System.out.println("Digite a inicial do contato a procurar: ");
-		letraInicial = leitor.next();// armazena na string
+		letraInicial = leitor.next().toUpperCase();// armazena na string
 
 		
-		System.out.println(novo.getDado());
-		
-		//while (novo.getDado() != null) {
 		while (novo != null) {
 			// atributo recebe o primeiro caracter da transf em string do dado
 			String inicialContato = (novo.getDado().toString().substring(0, 1));
 			
-			System.out.println("Contato lido:" + novo.getDado().toString());
-			
 			if (inicialContato.equals(letraInicial)) {
-				contatoEncontrado = novo.getDado().toString();
-				// impressao de verificacao1
-				System.out.println("Retornando encontrado: " + "\n"
-						+ contatoEncontrado);
-
-				novo = new NodoD<String>(contatoEncontrado);
-				// insere o nodo na listraFiltrada
-				listaFiltrada.insert(novo);
-				
+				//achei=true;	//ativa flag de encontrado
+				contatoEncontrado = novo.getDado().toString();//armazena conteudo em uma string
+				novo = new NodoD<String>(contatoEncontrado);//cria o novo nodo
+				//listaFiltrada.insert(novo);// insere o nodo na listraFiltrada	
+				return novo;
 			}
 			novo=novo.getNext();
 		}
-		// imprime a lista filtrada
-		listaFiltrada.print();
+		
+		return novo;
+		
 	}
 
 	public String trazElemento(String inicialBusca) {
