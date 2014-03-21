@@ -110,7 +110,7 @@ public class ListaDuplamenteEncadeada<T extends Comparable<T>> {
 		// define como anterior o encontrado ou o proprio
 		NodoD<T> anterior = procuraNodo(novo.getDado());
 
-		if (anterior != null) {// se nao for o primeiro ou lista vazia
+		if (anterior != null) {// se nao for o primeiro ou se !listaVazia
 			
 			novo.setNext(anterior.getNext());//aponta para o proximo do nodo anterior
 			novo.setPrev(anterior);//aponta para o anterior

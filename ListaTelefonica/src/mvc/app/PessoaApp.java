@@ -116,7 +116,7 @@ public class PessoaApp {
 		catch (Exception e) {
 			System.out
 					.println("OCORREU UM ERRO!!! - Retornando ao menu principal...");
-			//e.printStackTrace();
+			e.printStackTrace();
 			menuPrincipal();
 		}
 
@@ -137,9 +137,6 @@ public class PessoaApp {
 			System.exit(0);
 			break;
 		case 1://Avancar para proximo contato
-			System.out.println();
-			System.out.println();
-			
 			try{
 			nodoPesquisado=nodoPesquisado.getNext();//nodo recebe o proximo nodo
 			
@@ -157,6 +154,11 @@ public class PessoaApp {
 			menuPrincipal();
 			break;
 		case 2://Retornar para contato anterior
+			
+			System.out.println("Contato atual: " + nodoPesquisado.getDado());
+			System.out.println("Contato posterior: " + nodoPesquisado.getNext().getDado());
+			System.out.println("Contato anterior: " + nodoPesquisado.getPrev().getDado());
+			
 			System.out.println();
 			System.out.println(nodoPesquisado.getDado());
 			try{
@@ -200,7 +202,7 @@ public class PessoaApp {
 	catch (Exception e) {
 		System.out
 				.println("OCORREU UM ERRO!!! - Retornando ao menu principal...");
-		//e.printStackTrace();
+		e.printStackTrace();
 		menuPrincipal();
 	}
 		
