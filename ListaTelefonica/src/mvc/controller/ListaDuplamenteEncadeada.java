@@ -111,15 +111,15 @@ public class ListaDuplamenteEncadeada<T extends Comparable<T>> {
 		NodoD<T> anterior = procuraNodo(novo.getDado());
 
 		if (anterior != null) {// se nao for o primeiro ou lista vazia
-			novo.setNext(anterior.getNext());// aponta para o proximo do nodo
-												// anterior
-			anterior.setNext(novo);// define como proximo do anterior o nodo
-									// novo
+			
+			novo.setNext(anterior.getNext());//aponta para o proximo do nodo anterior
+			novo.setPrev(anterior);//aponta para o anterior
+			
+			anterior.setNext(novo);// define como proximo do anterior o nodo novo
 			if (anterior == tail)// se o anterior for a cauda
 				tail = novo;// o novo sera definido como cauda
 		} else {// senao
-			if (tail != null) {// anterior nulo e tail existe = 1 ou mais
-								// elementos, adic inicio
+			if (tail != null) {// anterior nulo e tail existe = 1 ou mais elementos, adic inicio
 				novo.setNext(head);// o proximo do novo e o head
 				head = novo; // novo passa a ser o head
 			} else {// senao (lista esta vazia)

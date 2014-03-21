@@ -25,6 +25,11 @@ public class PessoaApp {
 	static PessoaController controller = new PessoaController();
 	static BrowseableView viewer = new BrowseableView();
 	
+	static String contato = "";
+	static String[] vetContato = new String[2];
+	
+	static ListaDuplamenteEncadeada<String> lista;
+	
 	
 	public static void main(String[] args) throws IOException{
 		menuPrincipal();		
@@ -33,16 +38,11 @@ public class PessoaApp {
 	public static void menuPrincipal() {	
 	try {
 		/*
-		//instancia o objeto PessoaController
-		PessoaController controller = new PessoaController();
-		BrowseableView viewer = new BrowseableView();
-		
-*/
-		
 		String contato = "";
 		String[] vetContato = new String[2];
 		
 		ListaDuplamenteEncadeada<String> lista;
+		*/
 		
 		//armazena os contatos na lista
 		lista = (controller.lerArquivoPessoasRetorno());
@@ -89,7 +89,7 @@ public class PessoaApp {
 					nodoPesquisado=controller.buscaPessoa();
 					contato=nodoPesquisado.getDado();
 					}catch(Exception e){
-						System.out.println("N�o foi encontrado nenhum contato com essa letra inicial");
+						System.out.println("Nao foi encontrado nenhum contato com essa letra inicial");
 					}
 				vetContato=contato.split("\n");
 				controller.setView(new BrowseableView());
@@ -102,7 +102,7 @@ public class PessoaApp {
 				String pessoa = controller.buscaPessoa().getDado();
 				System.out.println(pessoa);
 				}catch(Exception e){
-					System.out.println("N�o foi encontrado nenhum contato com essa letra inicial");
+					System.out.println("Nao foi encontrado nenhum contato com essa letra inicial");
 				}
 				menuPrincipal();
 				break;
@@ -121,11 +121,12 @@ public class PessoaApp {
 		}
 
 	}// fim do metodo menuPrincipal
+	
 	public static void menuNavegacao(int operacao) {
 		try {
 		//instancia o objeto PessoaController
-		PessoaController controller = new PessoaController();
-		BrowseableView viewer = new BrowseableView();
+		//PessoaController controller = new PessoaController();
+		//BrowseableView viewer = new BrowseableView();
 		
 		String contato = "";
 		String[] vetContato = new String[2];
@@ -136,18 +137,19 @@ public class PessoaApp {
 			System.exit(0);
 			break;
 		case 1://Avancar para proximo contato
+			System.out.println();
+			System.out.println();
 			
-			System.out.println("Ultimo contato encontrado: " + nodoPesquisado.getDado());
-			
-			nodoPesquisado=nodoPesquisado.getNext();
 			try{
-				//armazena o nodo para facilitar a navegacao no metodo menuNavegacao
-				//nodoPesquisado=controller.buscaPessoa();
-				contato=nodoPesquisado.getDado();
-				}catch(Exception e){
-					System.out.println("Nao foi encontrado nenhum contato após o atual...");
-					e.printStackTrace();
-				}
+			nodoPesquisado=nodoPesquisado.getNext();//nodo recebe o proximo nodo
+			
+			contato=nodoPesquisado.getDado();
+				
+			}catch(Exception e){
+				System.out.println("Nao foi encontrado nenhum contato após o atual...");
+				e.printStackTrace();
+			}
+			
 			vetContato=contato.split("\n");
 			controller.setView(new BrowseableView());
 			viewer.imprimePessoa(vetContato[0], vetContato[1]);
@@ -155,25 +157,29 @@ public class PessoaApp {
 			menuPrincipal();
 			break;
 		case 2://Retornar para contato anterior
-			nodoPesquisado=nodoPesquisado.getPrev();
+			System.out.println();
+			System.out.println(nodoPesquisado.getDado());
 			try{
-				//armazena o nodo para facilitar a navegacao no metodo menuNavegacao
-				nodoPesquisado=controller.buscaPessoa();
+				nodoPesquisado=nodoPesquisado.getPrev();//nodo recebe o nodo anterior
+				
 				contato=nodoPesquisado.getDado();
+					
 				}catch(Exception e){
-					System.out.println("N�o foi encontrado nenhum contato com essa letra inicial");
+					System.out.println("Nao foi encontrado nenhum contato antes do atual...");
+					e.printStackTrace();
 				}
-			vetContato=contato.split("\n");
-			controller.setView(new BrowseableView());
-			viewer.imprimePessoa(vetContato[0], vetContato[1]);
-			
-			menuPrincipal();
-			break;
+						
+				vetContato=contato.split("\n");
+				controller.setView(new BrowseableView());
+				viewer.imprimePessoa(vetContato[0], vetContato[1]);
+				
+				menuPrincipal();
+				break;
 		case 3://Pesquisar outro contato
 			try{
 				contato=controller.buscaPessoa().getDado();
 				}catch(Exception e){
-					System.out.println("N�o foi encontrado nenhum contato com essa letra inicial");
+					System.out.println("Nao foi encontrado nenhum contato com essa letra inicial");
 				}
 			vetContato=contato.split("\n");
 			controller.setView(new BrowseableView());
