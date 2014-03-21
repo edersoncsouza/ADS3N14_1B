@@ -21,17 +21,23 @@ public class PessoaApp {
 	
 	static NodoD<String> nodoPesquisado = null;
 	
+	//instancia o objeto PessoaController
+	static PessoaController controller = new PessoaController();
+	static BrowseableView viewer = new BrowseableView();
+	
+	
 	public static void main(String[] args) throws IOException{
 		menuPrincipal();		
 	}	
 	
 	public static void menuPrincipal() {	
 	try {
+		/*
 		//instancia o objeto PessoaController
 		PessoaController controller = new PessoaController();
 		BrowseableView viewer = new BrowseableView();
 		
-
+*/
 		
 		String contato = "";
 		String[] vetContato = new String[2];
@@ -39,7 +45,7 @@ public class PessoaApp {
 		ListaDuplamenteEncadeada<String> lista;
 		
 		//armazena os contatos na lista
-		lista = (controller.LerArquivoPessoasRetorno());
+		lista = (controller.lerArquivoPessoasRetorno());
 		
 		//cria o leitor para a operacao de menu
 		Scanner leitor = new Scanner(System.in);
@@ -83,7 +89,7 @@ public class PessoaApp {
 					nodoPesquisado=controller.buscaPessoa();
 					contato=nodoPesquisado.getDado();
 					}catch(Exception e){
-						System.out.println("Não foi encontrado nenhum contato com essa letra inicial");
+						System.out.println("Nï¿½o foi encontrado nenhum contato com essa letra inicial");
 					}
 				vetContato=contato.split("\n");
 				controller.setView(new BrowseableView());
@@ -96,7 +102,7 @@ public class PessoaApp {
 				String pessoa = controller.buscaPessoa().getDado();
 				System.out.println(pessoa);
 				}catch(Exception e){
-					System.out.println("Não foi encontrado nenhum contato com essa letra inicial");
+					System.out.println("Nï¿½o foi encontrado nenhum contato com essa letra inicial");
 				}
 				menuPrincipal();
 				break;
@@ -130,13 +136,16 @@ public class PessoaApp {
 			System.exit(0);
 			break;
 		case 1://Avancar para proximo contato
+			
+			System.out.println("Ultimo contato encontrado: " + nodoPesquisado.getDado());
+			
 			nodoPesquisado=nodoPesquisado.getNext();
 			try{
 				//armazena o nodo para facilitar a navegacao no metodo menuNavegacao
 				//nodoPesquisado=controller.buscaPessoa();
 				contato=nodoPesquisado.getDado();
 				}catch(Exception e){
-					System.out.println("Não foi encontrado nenhum contato com essa letra inicial");
+					System.out.println("Nao foi encontrado nenhum contato apÃ³s o atual...");
 					e.printStackTrace();
 				}
 			vetContato=contato.split("\n");
@@ -152,7 +161,7 @@ public class PessoaApp {
 				nodoPesquisado=controller.buscaPessoa();
 				contato=nodoPesquisado.getDado();
 				}catch(Exception e){
-					System.out.println("Não foi encontrado nenhum contato com essa letra inicial");
+					System.out.println("Nï¿½o foi encontrado nenhum contato com essa letra inicial");
 				}
 			vetContato=contato.split("\n");
 			controller.setView(new BrowseableView());
@@ -164,7 +173,7 @@ public class PessoaApp {
 			try{
 				contato=controller.buscaPessoa().getDado();
 				}catch(Exception e){
-					System.out.println("Não foi encontrado nenhum contato com essa letra inicial");
+					System.out.println("Nï¿½o foi encontrado nenhum contato com essa letra inicial");
 				}
 			vetContato=contato.split("\n");
 			controller.setView(new BrowseableView());

@@ -107,8 +107,12 @@ public class PessoaController {
 			
 			if (inicialContato.equals(letraInicial)) {
 				//achei=true;	//ativa flag de encontrado
-				contatoEncontrado = novo.getDado().toString();//armazena conteudo em uma string
-				novo = new NodoD<String>(contatoEncontrado);//cria o novo nodo
+				contatoEncontrado = novo.getDado();//armazena conteudo em uma string
+				
+				
+				//novo = new NodoD<String>(contatoEncontrado);//cria o novo nodo
+				
+				
 				//listaFiltrada.insert(novo);// insere o nodo na listraFiltrada	
 				return novo;
 			}
@@ -151,7 +155,7 @@ public class PessoaController {
 	 * 
 	 * @Source http://www.guj.com.br/java/78913-ler-arquivo-utilizando-scanner
 	 */
-	public void LerArquivoPessoas() {
+	public void lerArquivoPessoas() {
 
 		try {
 
@@ -204,7 +208,7 @@ public class PessoaController {
 
 	}// fim do metodo lerArquivoPessoas
 
-	public ListaDuplamenteEncadeada<String> LerArquivoPessoasRetorno() {
+	public ListaDuplamenteEncadeada<String> lerArquivoPessoasRetorno() {
 
 		try {
 
