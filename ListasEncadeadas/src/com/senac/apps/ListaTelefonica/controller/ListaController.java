@@ -20,8 +20,9 @@ public class ListaController {
 	private ConsoleView view;
 	private Nodo<Pessoa> current;
 	private Pessoa currentBinario;
+	//private Nodo<Pessoa> currentBinario;
 	private Pessoa[] vetorPessoas;//Adicionado
-	private int listSize=0;
+	private int listSize=0;//adicionado
 	
 	public ListaController(ConsoleView view) {
 		this.view = view;
@@ -48,15 +49,20 @@ public class ListaController {
 		} catch (FileNotFoundException e) {
 			view.logError(e.getMessage());
 		}
+		fillArray(listSize);
 	}
 
-	public void fillArray(){
-		Pessoa contato = contatos.getHead().getData();
+	public void fillArray(int tamanho){
+		Nodo<Pessoa> contatoAtual = contatos.getHead();
+		vetorPessoas = new Pessoa[tamanho];
 		int cont=0;
-		
-		while(cont < listSize){
-		vetorPessoas[cont] = contato;
-		cont++;
+			
+		//while(cont < tamanho){//enquanto o contador for menor que o tamanho do vetor
+		while(contatoAtual != null){
+			vetorPessoas[cont] = contatoAtual.getData();//adiciona os dados do nodo a uma posicao do vetor
+
+			contatoAtual = contatoAtual.getNext();//avanca para o proximo nodo
+			cont++;//incrementa o contador para o vetor
 		}
 	}
 	
@@ -129,17 +135,26 @@ public class ListaController {
 		int limiteSuperior = vetorPessoas.length-1;
 		int limiteInferior = 0;
 		int contador=0;
+		int meio=0;
+		//Nodo<Pessoa> atual = null;
 		Pessoa atual=null;
 		
 		do{
 			contador++;
-			int meio = limiteSuperior/2;//calcula o meio do vetor para comecar a busca
-			atual = vetorPessoas[meio];//armazena a pessoa da casa do meio
-			int cmp = vetorPessoas[meio].getNome().compareTo(chave);//compara o nome da pessoa com a chave (letra inicial)
+			meio = limiteSuperior/2;//calcula o meio do vetor para comecar a busca
 			
+			System.out.println("tamanho do vetor e: " + limiteSuperior);
+			System.out.println("Diz que o meio e: " + meio);
+			System.out.println("Ta aqui o travamento" + vetorPessoas[meio].getNome());
+			
+			atual = vetorPessoas[meio];//armazena a pessoa da casa do meio
+
+			int cmp = vetorPessoas[meio].getNome().compareTo(chave);//compara o nome da pessoa com a chave (letra inicial)
+				
 				if (cmp == 0){
 					currentBinario = atual; //se o inicial for a mesma retorna
 					atual = null;
+					//return atual;
 					showContatoBinario(contador);
 				}
 				if (cmp < 0)
@@ -160,7 +175,7 @@ public class ListaController {
 		contato = procuraContato(contatos, chave);
 		
 		if (tipo.equals("binario"))
-			procuraContatoBinario(vetorPessoas, chave);
+		procuraContatoBinario(vetorPessoas, chave);
 		
 		if (contato != null)
 			current = contato;

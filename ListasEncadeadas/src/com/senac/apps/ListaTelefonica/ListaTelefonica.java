@@ -12,7 +12,7 @@ public class ListaTelefonica {
 		
 		controller.loadFile("telefones.dat");
 		
-		controller.fillArray();
+		//controller.fillArray();
 		
 		view.message("Digite 'ajuda' para comandos validos.");
 		while (!command.equals("sair")) {
