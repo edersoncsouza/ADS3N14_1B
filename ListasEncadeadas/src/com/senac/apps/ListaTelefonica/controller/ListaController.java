@@ -130,7 +130,7 @@ public class ListaController {
 		return null;
 	}
 	
-	private void procuraContatoBinario(Pessoa[] vetorPessoas, String chave)
+	private void procuraContatoBinario(String chave)
 	{
 		int limiteSuperior = vetorPessoas.length-1;
 		int limiteInferior = 0;
@@ -145,7 +145,7 @@ public class ListaController {
 			
 			System.out.println("tamanho do vetor e: " + limiteSuperior);
 			System.out.println("Diz que o meio e: " + meio);
-			System.out.println("Ta aqui o travamento" + vetorPessoas[meio].getNome());
+			System.out.println("Ta aqui o travamento: " + vetorPessoas[meio].getNome());
 			
 			atual = vetorPessoas[meio];//armazena a pessoa da casa do meio
 
@@ -170,12 +170,12 @@ public class ListaController {
 	public void searchContato(String tipo) {
 		String chave = view.read("Inicio do Nome").toLowerCase();
 		Nodo<Pessoa> contato = null;
-		
+			
 		if(tipo.equals("sequencial"))
 		contato = procuraContato(contatos, chave);
 		
 		if (tipo.equals("binario"))
-		procuraContatoBinario(vetorPessoas, chave);
+		procuraContatoBinario(chave);
 		
 		if (contato != null)
 			current = contato;
