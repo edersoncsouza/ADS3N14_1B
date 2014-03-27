@@ -22,10 +22,11 @@ public class ConsoleView {
 		message("Telefone: " + telefone);
 	}
 	
-	public void printContatoBinario(String nome, String telefone, int contador) {
+	public void printContatoBinario(String nome, String telefone, int contador, int indice) {
 		message("Nome: " + nome);
 		message("Telefone: " + telefone);
-		message("Numero de pesquisas: " + contador);
+		message("Numero de pesquisas binarias: " + contador);
+		message("Numero de pesquisas no metodo linear: " + (indice+1));
 	}
 
 	public void logError(String message) {

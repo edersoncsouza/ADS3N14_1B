@@ -75,11 +75,11 @@ public class ListaController {
 		}
 	}
 	
-	public void showContatoBinario(int contador){
+	public void showContatoBinario(int contador, int indice){
 		if (currentBinario == null) {
 			view.message("Nenhum contato existente.");
 		} else {
-			view.printContatoBinario(currentBinario.getNome(), currentBinario.getTelefone(), contador);
+			view.printContatoBinario(currentBinario.getNome(), currentBinario.getTelefone(), contador, indice);
 		}
 	}
 
@@ -130,32 +130,29 @@ public class ListaController {
 		return null;
 	}
 	
-	private void procuraContatoBinario(String chave)
+	private Pessoa procuraContatoBinario(String chave)
 	{
 		int limiteSuperior = vetorPessoas.length-1;
-		int limiteInferior = 0;
+		int limiteInferior = 0; 
 		int contador=0;
+		int indice=0;//utilizado para fins de comparacao com a pesquisa linear
 		int meio=0;
-		//Nodo<Pessoa> atual = null;
 		Pessoa atual=null;
 		
 		do{
 			contador++;
-			meio = limiteSuperior/2;//calcula o meio do vetor para comecar a busca
-			
-			System.out.println("tamanho do vetor e: " + limiteSuperior);
-			System.out.println("Diz que o meio e: " + meio);
-			System.out.println("Ta aqui o travamento: " + vetorPessoas[meio].getNome());
+			meio = (limiteInferior + limiteSuperior)/2;//calcula o meio do vetor para comecar a busca
 			
 			atual = vetorPessoas[meio];//armazena a pessoa da casa do meio
 
-			int cmp = vetorPessoas[meio].getNome().compareTo(chave);//compara o nome da pessoa com a chave (letra inicial)
-				
+			int cmp = chave.compareTo(vetorPessoas[meio].getNome().substring(0,1));//compara o nome da pessoa com a chave (letra inicial)
+			
 				if (cmp == 0){
 					currentBinario = atual; //se o inicial for a mesma retorna
 					atual = null;
+					indice=meio;//pois a leitura e sempre da posicao "do meio"
+					showContatoBinario(contador, indice);
 					//return atual;
-					showContatoBinario(contador);
 				}
 				if (cmp < 0)
 					limiteSuperior=meio-1;//se o inicial for menor reduz a pesquisa a primeira metade
@@ -163,7 +160,7 @@ public class ListaController {
 					limiteInferior = meio+1;//se o inicial for maior reduz a pesquisa a segunda metade
 				
 			}while (atual != null);
-
+		return null;
 	}
 	
 	
