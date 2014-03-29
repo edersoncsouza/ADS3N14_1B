@@ -140,18 +140,22 @@ public class ListaController {
 		Pessoa atual=null;
 		
 		do{
-			contador++;
-			meio = (limiteInferior + limiteSuperior)/2;//calcula o meio do vetor para comecar a busca
-			
-			atual = vetorPessoas[meio];//armazena a pessoa da casa do meio
-
-			int cmp = chave.compareTo(vetorPessoas[meio].getNome().substring(0,1));//compara o nome da pessoa com a chave (letra inicial)
-			
+				if (limiteSuperior < 0){
+					atual=null;
+				}else{
+					
+					contador++;//incrementa o contador das buscas efetuadas
+					meio = (limiteInferior + limiteSuperior)/2;//calcula o meio do vetor para comecar a busca
+					System.out.println("Meio: " + meio);
+					atual = vetorPessoas[meio];//armazena a pessoa da casa do meio
+					
+					int cmp = chave.compareTo(vetorPessoas[meio].getNome().substring(0,1));//compara o nome da pessoa com a chave (letra inicial)
+					
 				if (cmp == 0){
 					currentBinario = atual; //se o inicial for a mesma retorna
 					atual = null;
 					indice=meio;//pois a leitura e sempre da posicao "do meio"
-					showContatoBinario(contador, indice);
+					showContatoBinario(contador, indice);//como esse metodo nao trabalha com o tipo Nodo, possui um show proprio
 					//return atual;
 				}
 				if (cmp < 0)
@@ -159,11 +163,16 @@ public class ListaController {
 				if (cmp > 0)
 					limiteInferior = meio+1;//se o inicial for maior reduz a pesquisa a segunda metade
 				
-			}while (atual != null);
+			}
+		}while (atual != null);
 		return null;
 	}
 	
-	
+	/*
+	 * Metodo seachContato - Modificado
+	 * 
+	 * @param tipo - Recebe o tipo de pesquisa a ser executada, sequencial ou binario
+	 */
 	public void searchContato(String tipo) {
 		String chave = view.read("Inicio do Nome").toLowerCase();
 		Nodo<Pessoa> contato = null;
@@ -171,7 +180,7 @@ public class ListaController {
 		if(tipo.equals("sequencial"))
 		contato = procuraContato(contatos, chave);
 		
-		if (tipo.equals("binario"))
+		if (tipo.equals("binario"))//caso seja do tipo binario, chama metodo proprio
 		procuraContatoBinario(chave);
 		
 		if (contato != null)
