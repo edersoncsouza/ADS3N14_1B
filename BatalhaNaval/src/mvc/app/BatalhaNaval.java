@@ -7,9 +7,9 @@ public class BatalhaNaval {
 	public static void main(String[] args) {
 		TabuleiroController controller = new TabuleiroController();
 
-		controller.inicializaJogo();
+		controller.startGame();
 		
-		controller.imprimirMatriz();
+		controller.printMatrix();
 		
 	}
 
