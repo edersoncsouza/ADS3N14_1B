@@ -81,9 +81,18 @@ public class TabuleiroController {
 		// imprime a posicao gerada
 		System.out.println("Posicao gerada: " + x + y);
 
+		/*
 		// grava na matriz
-		matriz[x][y] = "0";
-	}
+		for(int i=0;i<tamanhoEmbarc;i++){
+			if(orientacao.equals("h"))
+			matriz[x][y+i] = "0";
+			else
+				matriz[x+i][y] = "0";
+		}
+		*/
+		insertShip( x,  y,  orientacao,  tamanhoEmbarc);
+		
+	}//fim do metodo insertAirCraftCarrier
 
 	public void insertFrigate() {
 
@@ -101,11 +110,21 @@ public class TabuleiroController {
 
 	}
 
+	public void insertShip(int x, int y, String orientacao, int tamanhoEmbarc){
+		
+		for(int i=0;i<tamanhoEmbarc;i++){
+			if(orientacao.equals("h"))
+			matriz[x][y+i] = "0";
+			else
+				matriz[x+i][y] = "0";
+		}
+	}
+	
 	public String recognitionMission(int tamanhoEmbarc) {
 		String orientacao;
 		String xyz;// linha, coluna, orientacao
 
-		int x, y;
+		int x, y, orientacaoInt;
 		int iFor;
 		int limiteTabuleiro;// para evitar colocar embarcacoes para fora do tabuleiro
 		boolean ocupado = true;
@@ -113,7 +132,10 @@ public class TabuleiroController {
 		do {
 
 			// gera randomicamente a orientacao v/h
-			if (generateRandomPosition() > 0) {
+			orientacaoInt = generateRandomPosition();
+			System.out.println("Orientacao: "+ orientacaoInt);
+			
+			if (orientacaoInt > 0) {
 				orientacao = "v";
 			} else {
 				orientacao = "h";
@@ -137,7 +159,9 @@ public class TabuleiroController {
 			if ((limiteTabuleiro - iFor) < tamanhoEmbarc) {
 				ocupado = true;
 				System.out.println("Limite do tabuleiro: " + limiteTabuleiro);
+				System.out.println("Orientacao: " + orientacao);
 				System.out.println("iFor: " + iFor);
+				System.out.println("Posicao XY: " + Integer.toString(x) +Integer.toString(y));
 				System.out.println("Tamanho da embarcacao: " + tamanhoEmbarc);
 				System.out.println("Nao cabia aqui!");
 			} else {
@@ -163,7 +187,7 @@ public class TabuleiroController {
 
 	public int generateRandomPosition() {// randomiza a posicao 0=v , 1=h
 		Random gerador = new Random();
-		int posicao = gerador.nextInt(1);
+		int posicao = gerador.nextInt(2);
 
 		return posicao;
 	}
