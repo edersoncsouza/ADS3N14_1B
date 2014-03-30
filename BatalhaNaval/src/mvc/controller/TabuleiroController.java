@@ -29,93 +29,146 @@ public class TabuleiroController {
 		int limiteFragata = 2;
 		int limiteTorpedeiro = 3;
 		int limiteSubmarinos = 5;
-		String[][] posicaoEmbarc=new String[1][1];
+		String[][] posicaoEmbarc = new String[1][1];
 		int x, y;
+		/*
 		boolean ocupado = true;
-		
-		//posicaoEmbarc[x][y]= "0";
-		
-		//imprime a posicao gerada
-		//System.out.println("Posicao gerada: " + x+y);
-				
-		//verifica se a posicao esta ocupada
-		//ocupado=recognitionMission(posicaoEmbarc);
-		
-		if(ocupado){
-			System.out.println("Posicao ocupada!");
-		}else System.out.println("Posicao livre!");
 
-		
-		insertAirCraftCarrier();//insertAirCraftCarrier(String[][] localizacao)
+		if (ocupado) {
+			System.out.println("Posicao ocupada!");
+		} else
+			System.out.println("Posicao livre!");
+		*/
+		insertAirCraftCarrier();// insertAirCraftCarrier(String[][] localizacao)
 		insertDestroyer();
 		insertFrigate();
 		insertTorpedoBoat();
 		insertSubmarine();
-		
-		
+
 	}
-	
-	public void insertAirCraftCarrier(){
+
+	public void insertAirCraftCarrier() {
 		Embarcacao portaAvioes = new Embarcacao();
 		String orientacao;
-		int x,y;
+		int tipoEmbarc, tamanhoEmbarc;
+		int x, y;
+
+		tamanhoEmbarc = portaAvioes.getTamanho("Porta-Avioes");
+		System.out.println("Tamanho da embarcacao "  + tamanhoEmbarc);
 		
-		//zero e a primeira posicao do vetor dos tipos de embarcacoes, PortaAvioes
-		portaAvioes.setTipoEmbarc(0);
+		tipoEmbarc = 0;// zero representa PortaAvioes
+
+		// zero e a primeira posicao do vetor dos tipos de embarcacoes,
+		// PortaAvioes
+		portaAvioes.setTipoEmbarc(tipoEmbarc);
+
+		// recebe a posicao xy e orientacao do metodo recognitionMission
+		String localizacao = recognitionMission(tamanhoEmbarc);
 		
-		//define randomicamente a orientacao v/h
-		if(generateRandomPosition()>0){
-			portaAvioes.setOrientacao("v");
-		}else{
-			portaAvioes.setOrientacao("h");
-		}
+		x = Integer.parseInt(localizacao.substring(0,1));//.charAt(0);// separa a parte x
 		
-		//gera randomicamente a possivel posicao
-		x = generateRandomLocation();
-		y = generateRandomLocation();
+		y =  Integer.parseInt(localizacao.substring(1,2));// separa a parte y
 		
-		//define a posicao da embarcacao
-		portaAvioes.setPosicaoPopa(x,y);
-		
-		//grava na matriz
-		matriz[x][y]="0";
-	}
-	
-	public void insertFrigate(){
-		
-	}
-	
-	public void insertTorpedoBoat(){
-		
-	}
-	
-	public void insertSubmarine(){
-		
-	}
-	
-	public void insertDestroyer(){
-		
+		orientacao = localizacao.substring(2);// separa a parte v/h
+		System.out.println("Orientacao: " + orientacao);
+
+		// define a orientacao da embarcacao
+		portaAvioes.setOrientacao(orientacao);
+
+		// define a posicao da embarcacao
+		portaAvioes.setPosicaoPopa(x, y);
+
+		// imprime a posicao gerada
+		System.out.println("Posicao gerada: " + x + y);
+
+		// grava na matriz
+		matriz[x][y] = "0";
 	}
 
-	public boolean recognitionMission(String posicao, String tipo, String orientacao) {
+	public void insertFrigate() {
+
+	}
+
+	public void insertTorpedoBoat() {
+
+	}
+
+	public void insertSubmarine() {
+
+	}
+
+	public void insertDestroyer() {
+
+	}
+
+	public String recognitionMission(int tamanhoEmbarc) {
+		String orientacao;
+		String xyz;// linha, coluna, orientacao
+
+		int x, y;
+		int iFor;
+		int limiteTabuleiro;// para evitar colocar embarcacoes para fora do tabuleiro
 		boolean ocupado = true;
-		int x = Character.getNumericValue(posicao.charAt(0));
-		int y = Character.getNumericValue(posicao.charAt(1));
 
-		if (matriz[x][y].equals(".")) {
-			ocupado = false;
-		}
-		return ocupado;
+		do {
+
+			// gera randomicamente a orientacao v/h
+			if (generateRandomPosition() > 0) {
+				orientacao = "v";
+			} else {
+				orientacao = "h";
+			}
+
+			// gera randomicamente a possivel posicao
+			x = generateRandomLocation();
+			y = generateRandomLocation();
+
+			// prepara os limites para uso do for
+			if (orientacao.equals("v")) {
+				iFor = x;// usa o valor da linha por se posicionar ao longo da mesma
+				limiteTabuleiro = jogo.getRows();
+			} else {
+				iFor = y;// usa o valor da coluna por se posicionar ao longo da  mesma
+				limiteTabuleiro = jogo.getColumns();
+			}
+
+			// se o limite menos a posicao for maior que o tamanho da
+			// embarcacao, nao ha espaco suficiente
+			if ((limiteTabuleiro - iFor) < tamanhoEmbarc) {
+				ocupado = true;
+				System.out.println("Limite do tabuleiro: " + limiteTabuleiro);
+				System.out.println("iFor: " + iFor);
+				System.out.println("Tamanho da embarcacao: " + tamanhoEmbarc);
+				System.out.println("Nao cabia aqui!");
+			} else {
+				// executa o for para testar posicoes ocupadas
+				for (int i = iFor; i < tamanhoEmbarc; i++) {
+
+					// verifica se a posicao esta ocupada
+					if (matriz[x][y].equals(".")) {
+
+						ocupado = false;
+					} else {
+						ocupado = true;
+						i = tamanhoEmbarc;//forca a saida do for ao encontrar um espaco ocupado
+					}
+				}
+			}//fim do else onde ha espaco suficiente
+		} while (ocupado);
+		
+		xyz = Integer.toString(x) +Integer.toString(y) + orientacao;
+		System.out.println("XYZ: " + xyz);
+		return xyz;
 	}
 
-	public int generateRandomPosition() {//randomiza a posicao 0=v , 1=h
+	public int generateRandomPosition() {// randomiza a posicao 0=v , 1=h
 		Random gerador = new Random();
 		int posicao = gerador.nextInt(1);
-		
+
 		return posicao;
 	}
-	
-	public int generateRandomLocation() {//randomiza as coordenadas xy
+
+	public int generateRandomLocation() {// randomiza as coordenadas xy
 		Random gerador = new Random();
 		int localizacao = gerador.nextInt(10);
 		return localizacao;
@@ -135,7 +188,8 @@ public class TabuleiroController {
 
 	public void imprimirMatriz() {
 		view.cabecalhoColunas(jogo.getColumns());
-		// view.cabecalhoLinhas(jogo.getRows(),jogo.getColumns());//imprimir linha falsa, apenas para teste
+		// view.cabecalhoLinhas(jogo.getRows(),jogo.getColumns());//imprimir
+		// linha falsa, apenas para teste
 		view.printMatrix(matriz, jogo.getRows(), jogo.getColumns());
 	}
 }
