@@ -3,6 +3,7 @@ package mvc.controller;
 import java.util.Random;
 
 import mvc.model.Embarcacao;
+import mvc.model.Jogador;
 import mvc.model.Tabuleiro;
 import mvc.view.ConsoleView;
 
@@ -10,6 +11,7 @@ public class TabuleiroController {
 
 	private Tabuleiro jogo;
 	private ConsoleView view;
+	private Jogador jogador;
 
 	String[][] matriz = new String[10][10];
 
@@ -18,19 +20,19 @@ public class TabuleiroController {
 		jogo.setColumns(10);
 		jogo.setRows(10);
 		view = new ConsoleView();
+		jogador = new Jogador();
 
-		fillMatrix();
-		assortShips();
+		fillMatrix();//preenche a matriz com os pontos
+		assortShips();//distribui as embarcacoes
 	}
 
 	public void assortShips() {
-
+		
 		insertAirCraftCarrier();// insertAirCraftCarrier(String[][] localizacao)
 		insertDestroyer();
 		insertFrigate();
 		insertTorpedoBoat();
 		insertSubmarine();
-
 	}
 
 	public void insertAirCraftCarrier() {
@@ -57,9 +59,6 @@ public class TabuleiroController {
 
 		// define a posicao da embarcacao
 		portaAvioes.setPosicaoPopa(x, y);
-
-		// imprime a posicao gerada
-		System.out.println("Posicao gerada: " + x + y);
 
 		insertShip( x,  y,  orientacao,  tamanhoEmbarc);
 		
@@ -89,9 +88,6 @@ public class TabuleiroController {
 		// define a posicao da embarcacao
 		destroyer.setPosicaoPopa(x, y);
 
-		// imprime a posicao gerada
-		System.out.println("Posicao gerada: " + x + y);
-
 		insertShip( x,  y,  orientacao,  tamanhoEmbarc);
 	}//fim do metodo insertDestroyer
 	
@@ -118,9 +114,6 @@ public class TabuleiroController {
 
 		// define a posicao da embarcacao
 		fragata.setPosicaoPopa(x, y);
-
-		// imprime a posicao gerada
-		System.out.println("Posicao gerada: " + x + y);
 
 		insertShip( x,  y,  orientacao,  tamanhoEmbarc);
 	}//fim do metodo insertFrigate
@@ -149,9 +142,6 @@ public class TabuleiroController {
 		// define a posicao da embarcacao
 		torpedeiro.setPosicaoPopa(x, y);
 
-		// imprime a posicao gerada
-		System.out.println("Posicao gerada: " + x + y);
-
 		insertShip( x,  y,  orientacao,  tamanhoEmbarc);
 	}//fim do metodo insertTorpedoBoat
 
@@ -178,9 +168,6 @@ public class TabuleiroController {
 
 		// define a posicao da embarcacao
 		submarino.setPosicaoPopa(x, y);
-
-		// imprime a posicao gerada
-		System.out.println("Posicao gerada: " + x + y);
 
 		insertShip( x,  y,  orientacao,  tamanhoEmbarc);
 	}//fim do metodo insertSubmarine
@@ -231,12 +218,14 @@ public class TabuleiroController {
 			// embarcacao, nao ha espaco suficiente
 			if ((limiteTabuleiro - iFor) < tamanhoEmbarc) {
 				ocupado = true;
+				/*
+				System.out.println("Nao cabia aqui!");
 				System.out.println("Limite do tabuleiro: " + limiteTabuleiro);
 				System.out.println("Orientacao: " + orientacao);
 				System.out.println("iFor: " + iFor);
 				System.out.println("Posicao XY: " + Integer.toString(x) +Integer.toString(y));
 				System.out.println("Tamanho da embarcacao: " + tamanhoEmbarc);
-				System.out.println("Nao cabia aqui!");
+				*/
 			} else {
 				//define ocupacao falsa, caso nao encontre ocupacao se mantem assim
 				ocupado = false;
@@ -252,7 +241,6 @@ public class TabuleiroController {
 		} while (ocupado);
 		
 		xyz = Integer.toString(x) +Integer.toString(y) + orientacao;
-		System.out.println("XYZ: " + xyz);
 		return xyz;
 	}
 
@@ -273,7 +261,6 @@ public class TabuleiroController {
 		for (int x = 0; x < matriz.length; x++)
 			for (int y = 0; y < matriz[x].length; y++)
 				matriz[x][y] = ".";
-		// matriz[x][y] = (Integer.toString(x)+Integer.toString(y));
 	}
 
 	public void printHeaders() {
@@ -286,4 +273,69 @@ public class TabuleiroController {
 		// view.cabecalhoLinhas(jogo.getRows(),jogo.getColumns());//imprimir linha falsa, apenas para teste
 		view.printMatrix(matriz, jogo.getRows(), jogo.getColumns());
 	}
-}
+	
+	public void printFakeMatrix() {
+		view.cabecalhoColunas(jogo.getColumns());
+		view.printFakeMatrix(matriz, jogo.getRows(), jogo.getColumns());
+	}
+	public boolean damageConfirmation(String jogada){
+		int x,y;
+		boolean confirmed=false;	
+		
+		x = Integer.parseInt(jogada.substring(0,1));//.charAt(0);// separa a parte x	
+		y =  Integer.parseInt(jogada.substring(1,2));// separa a parte y
+		
+		if (matriz[x][y].equals("0")) 
+				confirmed = true;
+		
+		return confirmed;
+		}
+
+	public void play() {
+		String jogada,x,y;
+		boolean acertou;
+		
+		if(jogador.getNome().equals("johnDoe"))
+		jogador.setNome(view.read("Nome"));
+		
+		jogada = view.read("Jogada (linha/coluna): ");
+		
+
+		
+		//x recebe a posicao X do metodo getJogada
+		x=jogada.substring(0,1);
+		//y recebe a posicao Y do metodo getJogada
+		y=jogada.substring(1,2);
+		
+		if((Integer.parseInt(x)<=jogo.getRows()) && y.matches("[a-j]")  ){
+		
+		//recebe a letra (posicao Y) da jogada, busca o indice numerico da mesma
+		//transforma novamente em string para passar pro metodo damageConfirmation
+		y = Integer.toString(view.getIndex(jogada.substring(1,2)));
+			
+		//envia pro metodo setJogada a string XY
+		jogo.setJogada(x.concat(y));
+		
+		//decrementa os pontos do jogador devido o tiro dado
+		jogador.setPontos(jogador.getPontos()-1);
+		
+		//armazena a situacao do tiro e faz atualizacoes
+		acertou = damageConfirmation(jogo.getJogada());
+		if (acertou){
+			System.out.println("Tiro acertou uma embarcacao!");
+			//armazena os pontos (por enquanto nao computa destruicao - 5 pontos
+			jogador.setPontos(jogador.getPontos()+3);
+			
+			//muda a tela apresentando o local
+		}else{
+			System.out.println("Tiro acertou apenas agua!");
+		}
+		
+	}else{
+		System.out.println("Jogada invalida! formato aceito: numero(linha)/letra(coluna), Ex.: 1a ");
+	}
+		//fim do if de validacao da jogada
+		
+	}//fim do metodo play
+	
+}//fim da classe TabuleiroController
