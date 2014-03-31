@@ -14,6 +14,7 @@ public class TabuleiroController {
 	private Jogador jogador;
 
 	String[][] matriz = new String[10][10];
+	String[][] matrizMascara = new String[10][10];
 
 	public void startGame() {
 		jogo = new Tabuleiro();
@@ -22,7 +23,7 @@ public class TabuleiroController {
 		view = new ConsoleView();
 		jogador = new Jogador();
 
-		fillMatrix();//preenche a matriz com os pontos
+		fillMatrixes();//preenche a matriz com os pontos
 		assortShips();//distribui as embarcacoes
 	}
 
@@ -257,10 +258,12 @@ public class TabuleiroController {
 		return localizacao;
 	}
 
-	public void fillMatrix() {
+	public void fillMatrixes() {
 		for (int x = 0; x < matriz.length; x++)
-			for (int y = 0; y < matriz[x].length; y++)
+			for (int y = 0; y < matriz[x].length; y++){
 				matriz[x][y] = ".";
+				matrizMascara[x][y] = ".";
+			}
 	}
 
 	public void printHeaders() {
@@ -278,6 +281,12 @@ public class TabuleiroController {
 		view.cabecalhoColunas(jogo.getColumns());
 		view.printFakeMatrix(matriz, jogo.getRows(), jogo.getColumns());
 	}
+	
+	public void printMaskMatrix() {
+		view.cabecalhoColunas(jogo.getColumns());
+		view.printMaskMatrix(matrizMascara, jogo.getRows(), jogo.getColumns());
+	}
+	
 	public boolean damageConfirmation(String jogada){
 		int x,y;
 		boolean confirmed=false;	
@@ -291,6 +300,18 @@ public class TabuleiroController {
 		return confirmed;
 		}
 
+	public void updateMaskMatrix(String jogada, boolean acerto){
+		int x,y;
+		//x recebe a posicao X
+		x=Integer.parseInt(jogada.substring(0,1));
+		//y recebe a posicao Y
+		y=Integer.parseInt(jogada.substring(1,2));
+		if(acerto)		
+			matrizMascara[x][y]="O";
+		else
+			matrizMascara[x][y]="-";
+	}
+	
 	public void play() {
 		String jogada,x,y;
 		boolean acertou;
@@ -300,14 +321,16 @@ public class TabuleiroController {
 		
 		jogada = view.read("Jogada (linha/coluna): ");
 		
-
+		//embuxa jogada para evitar vazio
+		if (jogada.equals(""))
+			jogada="00";
 		
 		//x recebe a posicao X do metodo getJogada
 		x=jogada.substring(0,1);
 		//y recebe a posicao Y do metodo getJogada
 		y=jogada.substring(1,2);
 		
-		if((Integer.parseInt(x)<=jogo.getRows()) && y.matches("[a-j]")  ){
+		if((Integer.parseInt(x)<=jogo.getRows()) && y.matches("[a-jA-J]")  ){
 		
 		//recebe a letra (posicao Y) da jogada, busca o indice numerico da mesma
 		//transforma novamente em string para passar pro metodo damageConfirmation
@@ -316,19 +339,25 @@ public class TabuleiroController {
 		//envia pro metodo setJogada a string XY
 		jogo.setJogada(x.concat(y));
 		
-		//decrementa os pontos do jogador devido o tiro dado
-		jogador.setPontos(jogador.getPontos()-1);
-		
 		//armazena a situacao do tiro e faz atualizacoes
 		acertou = damageConfirmation(jogo.getJogada());
 		if (acertou){
 			System.out.println("Tiro acertou uma embarcacao!");
 			//armazena os pontos (por enquanto nao computa destruicao - 5 pontos
 			jogador.setPontos(jogador.getPontos()+3);
+			//informa os pontos do jogador
+			System.out.println("Pontos do jogador " + jogador.getNome() + ": " + jogador.getPontos());
+			//insere o dano na matrizMascara
+			updateMaskMatrix(jogo.getJogada(), acertou);
 			
-			//muda a tela apresentando o local
 		}else{
 			System.out.println("Tiro acertou apenas agua!");
+			//decrementa os pontos (por enquanto nao computa destruicao - 5 pontos
+			jogador.setPontos(jogador.getPontos()-1);
+			//informa os pontos do jogador
+			System.out.println("Pontos do jogador " + jogador.getNome() + ": " + jogador.getPontos());
+			//insere o erro na matrizMascara
+			updateMaskMatrix(jogo.getJogada(), acertou);
 		}
 		
 	}else{

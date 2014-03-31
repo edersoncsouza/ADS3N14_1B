@@ -13,8 +13,8 @@ public class BatalhaNaval {
 
 		controller.startGame();
 
-		controller.printFakeMatrix();
-		// controller.printMatrix();
+		//controller.printFakeMatrix();
+		controller.printMaskMatrix();
 
 		view.message("Digite 'ajuda' para comandos validos.");
 		while (!command.equals("sair")) {
@@ -24,7 +24,8 @@ public class BatalhaNaval {
 			if(command.equals("jogar"))
 				controller.play();
 					
-			controller.printFakeMatrix();
+			//controller.printMatrix();
+			controller.printMaskMatrix();
 		}// fim do while
 	}// fim do metodo main
 

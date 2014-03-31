@@ -62,12 +62,25 @@ public class ConsoleView {
 		}
 	}
 
+	public void printMaskMatrix(String[][] maskMatrix, int rows, int columns) {
+
+		for (int x = 0; x < rows; x++) {
+			// acrescenta o numero da linha a string antes dos pontos
+			String header = Integer.toString(x);
+
+			// cria uma linha apenas com pontos e nao com valor da matriz
+			for (int y = 0; y < columns; y++) {
+				header = header + "\t" + maskMatrix[x][y];
+			}
+			System.out.println(header);
+		}
+	}
+	
 	public void printMatrix(String[][] matrix, int rows, int columns) {
 
 		for (int x = 0; x < rows; x++) {
-
-			String header = Integer.toString(x);// acrescenta o numero da linha
-												// a string antes dos pontos
+			// acrescenta o numero da linha a string antes dos pontos
+			String header = Integer.toString(x);
 
 			for (int y = 0; y < columns; y++) {
 				header = header + "\t" + matrix[x][y];
