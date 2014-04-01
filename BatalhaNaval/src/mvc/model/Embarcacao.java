@@ -1,30 +1,18 @@
 package mvc.model;
 
-public class Embarcacao {
-	
-	private String[] tipo = {"Porta-Avioes","Destroyer","Fragata","Torpedeiro","Submarino"};
-	private String tipoEmbarc;
-	private int[] tamanho = {5,4,3,2,1};
+abstract class Embarcacao {
+		
+	private int tamanho, dano;
 	private int[] posicaoPopa;
 	private String orientacao; //v=vertical, h=horizontal
 	
-	public String getTipoEmbarc() {
-		return tipoEmbarc;
-	}
-	public void setTipoEmbarc(int indiceTipo) {
-		tipoEmbarc = tipo[indiceTipo];
-	}
 	
-	public int getTamanho(String tipoEmbarc){
-		int tamanhoEmbarc=0;
-		
-		for(int i=0;i<tipo.length;i++){
-			if(tipo[i].equals(tipoEmbarc)){
-				tamanhoEmbarc = tamanho[i];
-				return tamanhoEmbarc;
-			}		
-		}
-		return tamanhoEmbarc;
+	public void setTamanho(int tamanho) {
+		this.tamanho = tamanho;
+	}
+
+	public int getTamanho() {
+		return tamanho;
 	}
 	
 	public int[] getPosicaoPopa() {
@@ -43,7 +31,11 @@ public class Embarcacao {
 		this.orientacao = orientacao;
 	}
 
-	
-	
-	
+	public int getDano() {
+		return dano;
+	}
+
+	public void setDano(int dano) {
+		this.dano = dano;
+	}	
 }

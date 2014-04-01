@@ -98,7 +98,7 @@ public class ConsoleView {
 			
 			if (letter.equals(cabecColumns[i])){
 				indice=i;
-				i=cabecColumns.length;//para forçar a sair do for mais cedo
+				i=cabecColumns.length;//para forcar a sair do for mais cedo
 			}
 		}
 		return indice;

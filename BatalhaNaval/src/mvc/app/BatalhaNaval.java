@@ -23,8 +23,8 @@ public class BatalhaNaval {
 				view.message("ajuda jogar sair");
 			if(command.equals("jogar"))
 				controller.play();
-					
-			//controller.printMatrix();
+			if(command.equals("idbeholda"))
+				controller.printMatrix();		
 			controller.printMaskMatrix();
 		}// fim do while
 	}// fim do metodo main

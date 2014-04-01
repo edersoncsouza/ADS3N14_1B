@@ -4,7 +4,6 @@ public class Tabuleiro {
 
 	private int rows;
 	private int columns;
-	private String xy;
 	
 	public int getRows() {
 		return rows;
@@ -22,10 +21,4 @@ public class Tabuleiro {
 		this.columns = columns;
 	}
 
-	public void setJogada(String xy){
-		this.xy = xy;
-	}
-	public String getJogada(){
-		return xy;
-	}
 }
