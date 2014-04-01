@@ -315,13 +315,8 @@ public class TabuleiroController {
 		view.printMaskMatrix(matrizMascara, jogo.getRows(), jogo.getColumns());
 	}
 	
-	//public boolean damageConfirmation(String jogada){
 	public boolean damageConfirmation(int x, int y){
-		//int x,y;
 		boolean confirmed=false;	
-		
-		//x = Integer.parseInt(jogada.substring(0,1));//.charAt(0);// separa a parte x	
-		//y =  Integer.parseInt(jogada.substring(1,2));// separa a parte y
 		
 		if (matriz[x][y].equals("0")) 
 				confirmed = true;
@@ -329,9 +324,16 @@ public class TabuleiroController {
 		return confirmed;
 		}
 
-	public void damageReport(int x, int y){
+	public void damageReport(Embarcacao[] vetor, int x, int y){
 		// buscar entre as embarcacoes alguma que esteja na posicao xy
-		
+		insertAirCraftCarrier(vetorPortaAvioes,5);	
+		insertDestroyer(vetorDestroyers,4);
+		insertFrigate(vetorFragatas,3);
+		insertTorpedoBoat(vetorTorpedeiros,2);
+		insertSubmarine(vetorSubmarinos,1);
+		for(){
+			
+		}
 		// devolve a posicao, insere o dano ou chama algum metodo que insira
 	}
 	
