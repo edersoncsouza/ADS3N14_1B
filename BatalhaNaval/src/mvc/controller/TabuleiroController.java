@@ -13,6 +13,11 @@ public class TabuleiroController {
 
 	String[][] matriz = new String[10][10];// cria a matriz do tabuleiro
 	String[][] matrizMascara = new String[10][10];// cria a matriz que oculta o tabuleiro
+	PortaAvioes[] vetorPortaAvioes = new PortaAvioes[1];
+	Destroyer[] vetorDestroyers = new Destroyer[2];
+	Fragata[] vetorFragatas = new Fragata[2];
+	Torpedeiro[] vetorTorpedeiros = new Torpedeiro[3];
+	Submarino[] vetorSubmarinos = new Submarino[5];
 
 	public void startGame() {
 		jogo = new Tabuleiro();// cria o objeto do tipo Tabuleiro
@@ -28,17 +33,12 @@ public class TabuleiroController {
 	public void assortShips() {
 		
 		/*
-		 * 1 “porta-aviões” com 5 unidades de tamanho.
-		 * 2 “destroyers” com 4 unidades de tamanho.
-		 * 2 “fragatas” com 3 unidades de tamanho.
-		 * 3 “torpedeiros” com 2 unidades de tamanho.
+		 * 1 porta-avioes com 5 unidades de tamanho.
+		 * 2 destroyers com 4 unidades de tamanho.
+		 * 2 fragatas com 3 unidades de tamanho.
+		 * 3 torpedeiros com 2 unidades de tamanho.
 		 * 5 submarinos, com 1 unidade de tamanho.
 		 */
-		PortaAvioes[] vetorPortaAvioes = new PortaAvioes[1];
-		Destroyer[] vetorDestroyers = new Destroyer[2];
-		Fragata[] vetorFragatas = new Fragata[2];
-		Torpedeiro[] vetorTorpedeiros = new Torpedeiro[3];
-		Submarino[] vetorSubmarinos = new Submarino[5];
 
 		insertAirCraftCarrier(vetorPortaAvioes,5);	
 		insertDestroyer(vetorDestroyers,4);
@@ -326,14 +326,68 @@ public class TabuleiroController {
 
 	public void damageReport(Embarcacao[] vetor, int x, int y){
 		// buscar entre as embarcacoes alguma que esteja na posicao xy
+		
+		/*
 		insertAirCraftCarrier(vetorPortaAvioes,5);	
 		insertDestroyer(vetorDestroyers,4);
 		insertFrigate(vetorFragatas,3);
 		insertTorpedoBoat(vetorTorpedeiros,2);
 		insertSubmarine(vetorSubmarinos,1);
-		for(){
+		 */
+		
+		int contaVetores=5;// tipos de embarcacoes
+		int tamanhoVetor;// quantidade de embarcacoes do tipo
+		int tamanhoEmbarcacao;// tamanho dasa embarcacoes do tipo
+		int posX, posY;// 
+		
+		String orientacao;// orientacao V/H
+		
+		for(int i=0;i>contaVetores;i++){
 			
-		}
+			if(contaVetores == 1){// se e do tipo portaAvioes
+					tamanhoVetor = vetorPortaAvioes.length;	
+			for(int j=0;j<tamanhoVetor;j++){// percorre todo o vetor do tipo
+				if(vetorPortaAvioes[i].getDano()==vetorPortaAvioes[i].getTamanho())// se ja foi afundado
+					j=tamanhoVetor;// faz sair da leitura desta instancia da embarcacao 
+				else{				
+				// recebe a orientacao e tamanho pra calcular as partes da embarcacao
+				orientacao = vetorPortaAvioes[i].getOrientacao();
+				tamanhoEmbarcacao =  vetorPortaAvioes[i].getTamanho();
+				
+				//recebe separadamente as coordenada X e Y
+				posX = vetorPortaAvioes[i].getPosicaoPopa()[0];
+				posY = vetorPortaAvioes[i].getPosicaoPopa()[1];
+				
+				for(int k=0; k<tamanhoEmbarcacao; k++){// testa cada uma das partes
+					//intX e intY sao as coordenadas do tiro recebido
+					if(orientacao.equals("v")){// se esta na vertical
+						// somado k na posicao X para percorrer as casas na vertical
+						if( (posX+k==intX) && (posY==intY) ){
+							vetorPortaAvioes[i].setDano(vetorPortaAvioes[i].getDano()+1);//incrementa o dano
+							k=tamanhoEmbarcacao;// faz sair do teste das partes
+							//return algo; //caso seja um metodo com retorno
+						}// fim do teste se tiro acertou
+					}//fim do if teste vertical
+					
+					else{// senao a embarcacao esta na horizontal
+						
+						// somado k na posicao Y para percorrer as casas na horizontal
+						if( (posX==intX) && (posY+k==intY) ){
+							vetorPortaAvioes[i].setDano(vetorPortaAvioes[i].getDano()+1);//incrementa o dano
+							k=tamanhoEmbarcacao;// faz sair do teste das partes
+							//return algo; //caso seja um metodo com retorno
+					}// fim do teste se tiro acertou
+				}//fim do else horizontal
+			}//fim do teste das partes		
+		}//fim do else de embarcacao ainda nao afundada
+	}// fim do percorredor de vetor por tipo	
+	
+			}//fim do testador vetor tipo 1 - portaAvioes
+		}//fim do testador de todos os vetores		
+
+
+		
+
 		// devolve a posicao, insere o dano ou chama algum metodo que insira
 	}
 	
@@ -431,8 +485,10 @@ public class TabuleiroController {
 			System.out.println("Tiro acertou uma embarcacao!");
 			
 			// 2 - chamar um metodo que verifique que embarcacao se encontra naquela posicao
-			damageReport(intX, intY);
-			
+			//damageReport(vetor, intX, intY);
+				
+		
+		
 			// informa os pontos do jogador
 			System.out.println("Pontos do jogador " + jogador.getNome() + ": " + jogador.getPontos());
 			
@@ -444,7 +500,8 @@ public class TabuleiroController {
 			// insere o dano na matrizMascara
 			updateMaskMatrix(intX,intY, acertou);
 			
-		}else{
+		}//fim do "se acertou"
+		else{
 			System.out.println("Tiro acertou apenas agua!");
 			//decrementa os pontos (por enquanto nao computa destruicao - 5 pontos
 			jogador.setPontos(jogador.getPontos()-1);
