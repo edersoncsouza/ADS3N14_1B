@@ -1,5 +1,8 @@
 package mvc.controller;
 
+import java.lang.reflect.Array;
+import java.util.Arrays;
+import java.util.List;
 import java.util.Random;
 
 import mvc.model.*;
@@ -19,6 +22,49 @@ public class TabuleiroController {
 	Torpedeiro[] vetorTorpedeiros = new Torpedeiro[3];
 	Submarino[] vetorSubmarinos = new Submarino[5];
 
+	/*
+	private Object[] arrayCopy(Object[] original) {
+		Class<?> arrayType = original.getClass().getComponentType();
+		Object[] copy = (Object[])java.lang.reflect.Array.newInstance(arrayType, original.length);
+		System.arraycopy(original, 0, copy, 0, original.length);
+		return copy;
+	}
+	*/	
+	@SuppressWarnings("unchecked")
+	private <T> T[] arrayCopy(T[] original) {
+		Class<?> arrayType = original.getClass().getComponentType();
+		T[] copy = (T[])java.lang.reflect.Array.newInstance(arrayType, original.length);
+		System.arraycopy(original, 0, copy, 0, original.length);
+		return copy;
+	}
+	/*
+	public static <T> T[] copyArray(T[] oldArray) {
+	    if (oldArray.length == 0) {
+	        throw new IllegalArgumentException("Array não deve ser vazio.");
+	    }
+	 
+	    T[] newArray = (T[]) Array.newInstance(oldArray[0].getClass(), oldArray.length);
+	 
+	    for (int x = 0; x < oldArray.length; x++) {
+	        newArray[x] = oldArray[x];
+	    }
+	 
+	    return newArray;
+	}
+*/
+	public static <T> T[] copyArray(final List<T> obj) {
+	    if (obj == null || obj.isEmpty()) {
+	        return null;
+	    }
+	    final T t = obj.get(0);
+	    final T[] res = (T[]) Array.newInstance(t.getClass(), obj.size());
+	    for (int i = 0; i < obj.size(); i++) {
+	        res[i] = obj.get(i);
+	    }
+	    return res;
+	}
+	
+	
 	public void startGame() {
 		jogo = new Tabuleiro();// cria o objeto do tipo Tabuleiro
 		jogo.setColumns(10);// define a qtdade de colunas
@@ -41,10 +87,10 @@ public class TabuleiroController {
 		 */
 
 		insertAirCraftCarrier(vetorPortaAvioes,5);	
-		insertDestroyer(vetorDestroyers,4);
-		insertFrigate(vetorFragatas,3);
-		insertTorpedoBoat(vetorTorpedeiros,2);
-		insertSubmarine(vetorSubmarinos,1);
+		//insertDestroyer(vetorDestroyers,4);
+		//insertFrigate(vetorFragatas,3);
+		//insertTorpedoBoat(vetorTorpedeiros,2);
+		//insertSubmarine(vetorSubmarinos,1);
 		
 	}
 
@@ -324,46 +370,60 @@ public class TabuleiroController {
 		return confirmed;
 		}
 
-	public void damageReport(Embarcacao[] vetor, int x, int y){
+
+	public void damageReport(int x, int y){
 		// buscar entre as embarcacoes alguma que esteja na posicao xy
-		
-		/*
-		insertAirCraftCarrier(vetorPortaAvioes,5);	
-		insertDestroyer(vetorDestroyers,4);
-		insertFrigate(vetorFragatas,3);
-		insertTorpedoBoat(vetorTorpedeiros,2);
-		insertSubmarine(vetorSubmarinos,1);
-		 */
-		
+				
 		int contaVetores=5;// tipos de embarcacoes
 		int tamanhoVetor;// quantidade de embarcacoes do tipo
 		int tamanhoEmbarcacao;// tamanho dasa embarcacoes do tipo
-		int posX, posY;// 
+		int posX, posY;//, intX=0, intY=0;;// 
 		
 		String orientacao;// orientacao V/H
+	
+		System.out.println("Engine Room, damage report!");
 		
-		for(int i=0;i>contaVetores;i++){
+		for(int i=1;i<contaVetores;i++){// para cada i percorre um tipo de vetor
+		
 			
-			if(contaVetores == 1){// se e do tipo portaAvioes
-					tamanhoVetor = vetorPortaAvioes.length;	
+			if(Integer.compare(i, 1) == 0){// se e do tipo PortaAvioes
+				tamanhoVetor = vetorPortaAvioes.length;	// recebe a quantidade de embarcacoes do tipo
+				PortaAvioes[] vetor;// cria o atributo vetor do tipo da embarcacao testada
+				vetor = new PortaAvioes[1];// instancia o vetor a receber as copias para testar
+				vetor[i] = vetorPortaAvioes[i];// copia o conteudo do vetor
+				System.out.println("Oba, acertei um Porta Avioes!!!"); // mensagem para teste
+		/*	}else
+			if(Integer.compare(i, 2) == 0){// se e do tipo Destroyer
+				tamanhoVetor = vetorDestroyers.length;
+				Destroyer[] vetor;
+				vetor = new Destroyer[1];
+				vetor[i] = vetorDestroyers[i];
+				System.out.println("Oba, acertei um Destroyer!!!");
+			}
+			*/
+			
 			for(int j=0;j<tamanhoVetor;j++){// percorre todo o vetor do tipo
-				if(vetorPortaAvioes[i].getDano()==vetorPortaAvioes[i].getTamanho())// se ja foi afundado
+				if(vetorPortaAvioes[j].getDano()==vetorPortaAvioes[j].getTamanho())// se ja foi afundado
+					
+					//System.out.println("Esse já foi pra conta!");
+					
 					j=tamanhoVetor;// faz sair da leitura desta instancia da embarcacao 
-				else{				
+				else{
+					System.out.println("Ainda nao foi afundado!");
 				// recebe a orientacao e tamanho pra calcular as partes da embarcacao
-				orientacao = vetorPortaAvioes[i].getOrientacao();
-				tamanhoEmbarcacao =  vetorPortaAvioes[i].getTamanho();
+				orientacao = vetorPortaAvioes[j].getOrientacao();
+				tamanhoEmbarcacao =  vetorPortaAvioes[j].getTamanho();
 				
 				//recebe separadamente as coordenada X e Y
-				posX = vetorPortaAvioes[i].getPosicaoPopa()[0];
-				posY = vetorPortaAvioes[i].getPosicaoPopa()[1];
+				posX = vetorPortaAvioes[j].getPosicaoPopa()[0];
+				posY = vetorPortaAvioes[j].getPosicaoPopa()[1];
 				
 				for(int k=0; k<tamanhoEmbarcacao; k++){// testa cada uma das partes
 					//intX e intY sao as coordenadas do tiro recebido
 					if(orientacao.equals("v")){// se esta na vertical
 						// somado k na posicao X para percorrer as casas na vertical
-						if( (posX+k==intX) && (posY==intY) ){
-							vetorPortaAvioes[i].setDano(vetorPortaAvioes[i].getDano()+1);//incrementa o dano
+						if( (posX+k==x) && (posY==y) ){
+							vetorPortaAvioes[j].setDano(vetorPortaAvioes[j].getDano()+1);//incrementa o dano
 							k=tamanhoEmbarcacao;// faz sair do teste das partes
 							//return algo; //caso seja um metodo com retorno
 						}// fim do teste se tiro acertou
@@ -372,21 +432,21 @@ public class TabuleiroController {
 					else{// senao a embarcacao esta na horizontal
 						
 						// somado k na posicao Y para percorrer as casas na horizontal
-						if( (posX==intX) && (posY+k==intY) ){
-							vetorPortaAvioes[i].setDano(vetorPortaAvioes[i].getDano()+1);//incrementa o dano
+						if( (posX==x) && (posY+k==y) ){
+							vetorPortaAvioes[j].setDano(vetorPortaAvioes[j].getDano()+1);//incrementa o dano
 							k=tamanhoEmbarcacao;// faz sair do teste das partes
 							//return algo; //caso seja um metodo com retorno
 					}// fim do teste se tiro acertou
 				}//fim do else horizontal
-			}//fim do teste das partes		
+			}//fim do teste das partes
+				//verifica se apos computar dano a embarcacao foi afundada acrescenta + 2 pontos ao jogador
+				if(vetorPortaAvioes[j].getDano()==vetorPortaAvioes[j].getTamanho())
+				jogador.setPontos(jogador.getPontos()+2);
 		}//fim do else de embarcacao ainda nao afundada
 	}// fim do percorredor de vetor por tipo	
 	
 			}//fim do testador vetor tipo 1 - portaAvioes
 		}//fim do testador de todos os vetores		
-
-
-		
 
 		// devolve a posicao, insere o dano ou chama algum metodo que insira
 	}
@@ -447,7 +507,7 @@ public class TabuleiroController {
 		if(jogador.getNome().equals("johnDoe"))
 		jogador.setNome(view.read("Nome"));
 		
-		jogada = view.read("Jogada (linha/coluna): ");
+		jogada = view.read("Jogada (linha/coluna) ");
 		
 		// embuxa jogada para evitar vazio
 		if (jogada.equals(""))
@@ -461,12 +521,22 @@ public class TabuleiroController {
 		
 		if((Integer.parseInt(x)<=jogo.getRows()) && y.matches("[a-jA-J]")  ){
 		
+		// recebe o valor inteiro da posicao X da jogada
+		intX = returnIntegerXY(jogada,'x');
 		// recebe a letra (posicao Y) da jogada, busca o indice numerico da mesma
 		intY = view.getIndex(y);
 		
 		// recebe a posicao Y numerica e transforma em string para passar pro metodo damageConfirmation
 		y = Integer.toString(intY);
-
+		
+		//fazer um array qualquer para armazenar as jogadas e caso nao tenha sido feita segue para a verificacao
+		//isso evita pontuar uma área já atingida
+		char[] jogadas = new char[100];
+		int pontoDoTabuleiro =  Integer.parseInt(x.concat(y));
+		if (jogadas[pontoDoTabuleiro].equals("x")){
+			System.out.println("Essa jogada já foi feita!");
+		}else{
+		
 		//armazena a situacao do tiro e faz atualizacoes
 		acertou = damageConfirmation(intX, intY);
 		if (acertou){
@@ -484,18 +554,18 @@ public class TabuleiroController {
 			// 1 - informa que acertou
 			System.out.println("Tiro acertou uma embarcacao!");
 			
-			// 2 - chamar um metodo que verifique que embarcacao se encontra naquela posicao
-			//damageReport(vetor, intX, intY);
-				
-		
-		
-			// informa os pontos do jogador
-			System.out.println("Pontos do jogador " + jogador.getNome() + ": " + jogador.getPontos());
-			
-			// insere o dano na embarcacao
+			// 2 - chamar um metodo que verifique que embarcacao se encontra naquela posicao	
+			// 3 - insere o dano na embarcacao
+			// 4 - verificar se a embarcacao foi destruida (dano=tamanho)
+			damageReport(intX, intY);
+	
+			System.out.println("Danos na embarcacao: " + vetorPortaAvioes[0].getDano());
 			
 			// armazena os pontos (por enquanto nao computa destruicao - 5 pontos
 			jogador.setPontos(jogador.getPontos()+3);
+			
+			// informa os pontos do jogador
+			System.out.println("Pontos do jogador " + jogador.getNome() + ": " + jogador.getPontos());
 			
 			// insere o dano na matrizMascara
 			updateMaskMatrix(intX,intY, acertou);
@@ -517,5 +587,78 @@ public class TabuleiroController {
 		//fim do if de validacao da jogada
 		
 	}//fim do metodo play
+	
+	/*
+	public void damageReport(int x, int y){
+		// buscar entre as embarcacoes alguma que esteja na posicao xy
+				
+		int contaVetores=5;// tipos de embarcacoes
+		int tamanhoVetor;// quantidade de embarcacoes do tipo
+		int tamanhoEmbarcacao;// tamanho dasa embarcacoes do tipo
+		int posX, posY;//, intX=0, intY=0;;// 
+		
+		String orientacao;// orientacao V/H
+	
+		System.out.println("Engine Room, damage report!");
+		
+		for(int i=0;i<contaVetores;i++){
+			
+			PortaAvioes[] vetor;
+			
+			if(Integer.compare(i, 1) == 0){// se e do tipo portaAvioes
+				tamanhoVetor = vetorPortaAvioes.length;	
+				vetor = new PortaAvioes[1];
+				vetor[i] = vetorPortaAvioes[i];
+				System.out.println("Oba, carquei um Porta Avioes!!!");
+				
+			for(int j=0;j<tamanhoVetor;j++){// percorre todo o vetor do tipo
+				if(vetorPortaAvioes[j].getDano()==vetorPortaAvioes[j].getTamanho())// se ja foi afundado
+					
+					//System.out.println("Esse já foi pra conta!");
+					
+					j=tamanhoVetor;// faz sair da leitura desta instancia da embarcacao 
+				else{
+					System.out.println("Ainda nao foi afundado!");
+				// recebe a orientacao e tamanho pra calcular as partes da embarcacao
+				orientacao = vetorPortaAvioes[j].getOrientacao();
+				tamanhoEmbarcacao =  vetorPortaAvioes[j].getTamanho();
+				
+				//recebe separadamente as coordenada X e Y
+				posX = vetorPortaAvioes[j].getPosicaoPopa()[0];
+				posY = vetorPortaAvioes[j].getPosicaoPopa()[1];
+				
+				for(int k=0; k<tamanhoEmbarcacao; k++){// testa cada uma das partes
+					//intX e intY sao as coordenadas do tiro recebido
+					if(orientacao.equals("v")){// se esta na vertical
+						// somado k na posicao X para percorrer as casas na vertical
+						if( (posX+k==x) && (posY==y) ){
+							vetorPortaAvioes[j].setDano(vetorPortaAvioes[j].getDano()+1);//incrementa o dano
+							k=tamanhoEmbarcacao;// faz sair do teste das partes
+							//return algo; //caso seja um metodo com retorno
+						}// fim do teste se tiro acertou
+					}//fim do if teste vertical
+					
+					else{// senao a embarcacao esta na horizontal
+						
+						// somado k na posicao Y para percorrer as casas na horizontal
+						if( (posX==x) && (posY+k==y) ){
+							vetorPortaAvioes[j].setDano(vetorPortaAvioes[j].getDano()+1);//incrementa o dano
+							k=tamanhoEmbarcacao;// faz sair do teste das partes
+							//return algo; //caso seja um metodo com retorno
+					}// fim do teste se tiro acertou
+				}//fim do else horizontal
+			}//fim do teste das partes
+				//verifica se apos computar dano a embarcacao foi afundada acrescenta + 2 pontos ao jogador
+				if(vetorPortaAvioes[j].getDano()==vetorPortaAvioes[j].getTamanho())
+				jogador.setPontos(jogador.getPontos()+2);
+		}//fim do else de embarcacao ainda nao afundada
+	}// fim do percorredor de vetor por tipo	
+	
+			}//fim do testador vetor tipo 1 - portaAvioes
+		}//fim do testador de todos os vetores		
+
+		// devolve a posicao, insere o dano ou chama algum metodo que insira
+	}
+	*/
 	
 }//fim da classe TabuleiroController

@@ -1,11 +1,11 @@
 package mvc.model;
 
-abstract class Embarcacao {
+
+abstract class Embarcacao{
 		
 	private int tamanho, dano;
 	private int[] posicaoPopa;
 	private String orientacao; //v=vertical, h=horizontal
-	
 	
 	public void setTamanho(int tamanho) {
 		this.tamanho = tamanho;
