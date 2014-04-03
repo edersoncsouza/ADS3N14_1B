@@ -383,14 +383,17 @@ public class TabuleiroController {
 	
 		System.out.println("Engine Room, damage report!");
 		
-		for(int i=1;i<contaVetores;i++){// para cada i percorre um tipo de vetor
+		for(int i=0;i<contaVetores;i++){// para cada i percorre um tipo de vetor
 		
 			
-			if(Integer.compare(i, 1) == 0){// se e do tipo PortaAvioes
+			if(Integer.compare(i, 0) == 0){// se e do tipo PortaAvioes
 				tamanhoVetor = vetorPortaAvioes.length;	// recebe a quantidade de embarcacoes do tipo
 				PortaAvioes[] vetor;// cria o atributo vetor do tipo da embarcacao testada
 				vetor = new PortaAvioes[1];// instancia o vetor a receber as copias para testar
-				vetor[i] = vetorPortaAvioes[i];// copia o conteudo do vetor
+				
+				System.out.println("valor de i: " + i);
+				
+				vetor[0] = vetorPortaAvioes[i];// copia o conteudo do vetor
 				System.out.println("Oba, acertei um Porta Avioes!!!"); // mensagem para teste
 		/*	}else
 			if(Integer.compare(i, 2) == 0){// se e do tipo Destroyer
@@ -440,8 +443,10 @@ public class TabuleiroController {
 				}//fim do else horizontal
 			}//fim do teste das partes
 				//verifica se apos computar dano a embarcacao foi afundada acrescenta + 2 pontos ao jogador
-				if(vetorPortaAvioes[j].getDano()==vetorPortaAvioes[j].getTamanho())
+				if(vetorPortaAvioes[j].getDano()==vetorPortaAvioes[j].getTamanho()){
 				jogador.setPontos(jogador.getPontos()+2);
+				System.out.println("Embarcacao afundada!");
+				}
 		}//fim do else de embarcacao ainda nao afundada
 	}// fim do percorredor de vetor por tipo	
 	
@@ -519,6 +524,7 @@ public class TabuleiroController {
 		// y recebe a posicao Y do metodo getJogada
 		y = returnStringXY(jogada,'y');
 		
+		try{
 		if((Integer.parseInt(x)<=jogo.getRows()) && y.matches("[a-jA-J]")  ){
 		
 		// recebe o valor inteiro da posicao X da jogada
@@ -529,12 +535,11 @@ public class TabuleiroController {
 		// recebe a posicao Y numerica e transforma em string para passar pro metodo damageConfirmation
 		y = Integer.toString(intY);
 		
-		//fazer um array qualquer para armazenar as jogadas e caso nao tenha sido feita segue para a verificacao
-		//isso evita pontuar uma área já atingida
-		char[] jogadas = new char[100];
-		int pontoDoTabuleiro =  Integer.parseInt(x.concat(y));
-		if (jogadas[pontoDoTabuleiro].equals("x")){
-			System.out.println("Essa jogada já foi feita!");
+		//verifica na matriz mascara se o tiro j� foi dado nessa posicao e,
+		// caso nao tenha sido feita segue para a verificacao
+		//isso evita pontuar uma area ja atingida
+		if (matrizMascara[intX][intY].equals("0")||matrizMascara[intX][intY].equals("x")) {
+			System.out.println("Essa jogada ja foi feita!");
 		}else{
 		
 		//armazena a situacao do tiro e faz atualizacoes
@@ -580,14 +585,18 @@ public class TabuleiroController {
 			//insere o erro na matrizMascara
 			updateMaskMatrix(intX,intY, acertou);
 		}
-		
-	}else{
-		System.out.println("Jogada invalida! formato aceito: numero(linha)/letra(coluna), Ex.: 1a ");
-	}
-		//fim do if de validacao da jogada
-		
-	}//fim do metodo play
+	}//fim do else, jogada nao feita
+		}//fim do teste de validacao simples
 	
+	
+		}
+		catch(Exception E){
+			System.out.println("Jogada invalida! formato aceito: numero(linha)/letra(coluna), Ex.: 1a ");
+		}
+	
+	}//fim do metodo play
+		
+		
 	/*
 	public void damageReport(int x, int y){
 		// buscar entre as embarcacoes alguma que esteja na posicao xy
