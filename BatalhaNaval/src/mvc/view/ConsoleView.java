@@ -62,18 +62,20 @@ public class ConsoleView {
 		}
 	}
 
-	public void printMaskMatrix(String[][] maskMatrix, int rows, int columns) {
-
+	
+	public String returnMatrix(String[][] matrix, int rows, int columns) {
+		String header = "";
 		for (int x = 0; x < rows; x++) {
 			// acrescenta o numero da linha a string antes dos pontos
-			String header = Integer.toString(x);
+			header = header + Integer.toString(x);
 
 			// cria uma linha apenas com pontos e nao com valor da matriz
 			for (int y = 0; y < columns; y++) {
-				header = header + "\t" + maskMatrix[x][y];
+				if(matrix[x][y].equals("O"))
+				header = header + "\t" + matrix[x][y];
 			}
-			System.out.println(header);
 		}
+		return header;
 	}
 	
 	public void printMatrix(String[][] matrix, int rows, int columns) {
@@ -96,10 +98,8 @@ public class ConsoleView {
 		
 		for(int i=0;i<cabecColumns.length;i++){
 			
-			if (letter.equals(cabecColumns[i])){
+			if (letter.equals(cabecColumns[i]))
 				indice=i;
-				i=cabecColumns.length;//para forcar a sair do for mais cedo
-			}
 		}
 		return indice;
 	}
