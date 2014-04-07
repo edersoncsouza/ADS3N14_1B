@@ -306,11 +306,6 @@ public class TabuleiroController {
 			}
 	}
 
-	public void printHeaders() {
-		view.cabecalhoColunas(jogo.getColumns());
-		view.cabecalhoLinhas(jogo.getRows(), jogo.getColumns());
-	}
-
 	public void printMatrix() {
 		view.cabecalhoColunas(jogo.getColumns());
 		view.printMatrix(matriz, jogo.getRows(), jogo.getColumns());
@@ -586,9 +581,11 @@ public class TabuleiroController {
 				// da mesma
 				intY = view.getIndex(y);
 
+				/*
 				// recebe a posicao Y numerica e transforma em string para
 				// passar pro metodo damageConfirmation
 				y = Integer.toString(intY);
+				*/
 
 				/* verifica, na matriz mascara, se o tiro ja foi dado nessa
 				 * posicao. Caso nao tenha sido dado segue para a 
@@ -613,9 +610,6 @@ public class TabuleiroController {
 						 * - insere o dano na embarcacao;
 						 * - verifica se a embarcacao foi destruida(dano=tamanho);
 						 */
-						
-						System.out.println("intX recebeu: "+ intX + ". intY recebeu: " + intY);
-						
 						damageReport(intX, intY);
 
 						// armazena os pontos normais
@@ -643,7 +637,7 @@ public class TabuleiroController {
 			}// fim do teste de validacao simples
 
 		} catch (Exception E) {
-			E.printStackTrace();
+			//E.printStackTrace();
 			System.out
 					.println("Jogada invalida! formato aceito: numero(linha)/letra(coluna), Ex.: 1a ");
 		}

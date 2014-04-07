@@ -24,68 +24,44 @@ public class ConsoleView {
 			"I", "J" };
 
 	public void cabecalhoColunas(int colunas) {
-		String cabecalho = " ";
+		StringBuffer cabecalho = new StringBuffer();
 		for (int i = 0; i < colunas; i++) {
-			cabecalho = cabecalho + "\t" + cabecColumns[i];
+			cabecalho.append("\t" + cabecColumns[i]);
 		}
 		System.out.println(cabecalho);
 	}
-
-	public void cabecalhoLinhas(int linhas, int colunas) {
-
-		for (int j = 0; j < linhas; j++) {
-
-			String cabecalho = Integer.toString(j);// acrescenta o numero da
-													// linha a string antes dos
-													// pontos
-
-			for (int i = 0; i < colunas; i++) {
-				cabecalho = cabecalho + "\t" + ".";
-			}
-			System.out.println(cabecalho);
-
-		}
-	}
-
-	public void printFakeMatrix(String[][] matrix, int rows, int columns) {
-
-		for (int x = 0; x < rows; x++) {
-
-			String header = Integer.toString(x);// acrescenta o numero da linha
-												// a string antes dos pontos
-
-			for (int y = 0; y < columns; y++) {
-				header = header + "\t" + ".";// cria uma linha apenas com pontos
-												// e nao com valor da matriz
-			}
-			System.out.println(header);
-		}
-	}
-
 	
 	public String returnMatrix(String[][] matrix, int rows, int columns) {
-		String header = "";
+		String returnedMatrix;
+		//String header = "";
+		StringBuffer header = new StringBuffer();
 		for (int x = 0; x < rows; x++) {
+			header.append(Integer.toString(x));
 			// acrescenta o numero da linha a string antes dos pontos
-			header = header + Integer.toString(x);
+			//header = header + Integer.toString(x);
 
 			// cria uma linha apenas com pontos e nao com valor da matriz
 			for (int y = 0; y < columns; y++) {
 				if(matrix[x][y].equals("O"))
-				header = header + "\t" + matrix[x][y];
+					header.append("\t" + matrix[x][y]);
+					//header = header + "\t" + matrix[x][y];
 			}
 		}
-		return header;
+		returnedMatrix = header.toString();
+		return returnedMatrix;
 	}
 	
 	public void printMatrix(String[][] matrix, int rows, int columns) {
 
 		for (int x = 0; x < rows; x++) {
+			StringBuffer header = new StringBuffer();
 			// acrescenta o numero da linha a string antes dos pontos
-			String header = Integer.toString(x);
-
+			//String header = Integer.toString(x);
+			header.append(Integer.toString(x));
+			
 			for (int y = 0; y < columns; y++) {
-				header = header + "\t" + matrix[x][y];
+				header.append("\t" + matrix[x][y]);
+				//header = header + "\t" + matrix[x][y];
 			}
 			System.out.println(header);
 		}
