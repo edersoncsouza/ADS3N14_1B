@@ -73,7 +73,7 @@ public class HeapSort {
 		HeapSort.heapifyCounter = heapifyCounter;
 	}
 
-	private static void imprimeVetor(int[] vetor, int j, int aposJ){
+	public static void imprimeVetor(int[] vetor, int j, int aposJ){
 		StringBuffer stringVetor = new StringBuffer();
 		for (int i = 0; i < vetor.length; i++) {
 			if (i == j || i == aposJ)

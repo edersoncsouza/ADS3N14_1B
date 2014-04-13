@@ -6,8 +6,9 @@ public class Principal {
 
 	public static void main(String[] args) {
 		//Algoritmos algoritmo = new Algoritmos();
-		int[] vetorInteiros = {9,2,8,1,10,4,3,6,5,7,11,-1,-6,0};
-		HeapSort.heapSort(vetorInteiros);
+		int[] vetorInteirosHeapSort = {14,-2,9,8,1,-3,10,-4,4,0,13,-5,15,6,5,7,11,-1,2,3,12};
+		int[] vetorInteirosSelectionSort = {14,-2,9,8,1,-3,10,-4,4,0,13,-5,15,6,5,7,11,-1,2,3,12};
+		HeapSort.heapSort(vetorInteirosHeapSort);
 		
 		System.out.println();System.out.println();
 		System.out.println("#### COMPARACAO ENTRE ALGORITMOS ####");
@@ -19,8 +20,13 @@ public class Principal {
 		System.out.println("Numero de comparacoes: "+ HeapSort.getComparisonsCounter());
 		System.out.println("Numero de trocas: "+ HeapSort.getChangesCounter());
 		System.out.println();
-		System.out.println("#### Algoritmo Selection Sort ####");
 		
+
+		
+		SelectionSort.selectionSort(vetorInteirosSelectionSort);
+		System.out.println("#### Algoritmo Selection Sort ####");
+		System.out.println("Numero de comparacoes: "+ SelectionSort.getSelectionSortComparisonsCounter());
+		System.out.println("Numero de trocas: "+ SelectionSort.getSelectionSortChangesCounter());
 	}
 
 }
