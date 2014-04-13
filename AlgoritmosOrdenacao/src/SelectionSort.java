@@ -6,8 +6,8 @@
  */
 
 public class SelectionSort {
-	private static int SelectionSortChangesCounter = 0,
-			SelectionSortComparisonsCounter = 0;
+	private static int selectionSortChangesCounter = 0,
+			selectionSortComparisonsCounter = 0;
 
 	/*
 	 * Metodo selectionSort: Executa os testes e chama o metodo para trocar
@@ -26,12 +26,12 @@ public class SelectionSort {
 			for (i = j + 1; i < vetor.length; i++) {
 				if (vetor[i] < vetor[menor])// caso o elemento seja menor que o menor definido
 					menor = i;// define como menor o elemento lido
-				SelectionSortComparisonsCounter++;// incrementa o contador de comparacoes
+				selectionSortComparisonsCounter++;// incrementa o contador de comparacoes
 			}
 
 			if (menor != j) {
 				swap(vetor, j, menor);
-				SelectionSortChangesCounter++;
+				selectionSortChangesCounter++;
 			}
 		}// fim do for J
 
@@ -51,15 +51,15 @@ public class SelectionSort {
 		v[aposJ] = aux;
 		System.out.println("Vetor Swapeando:");
 		HeapSort.imprimeVetor(v, j, aposJ);
-		SelectionSortChangesCounter++;// incrementa o conta trocas
+		selectionSortChangesCounter++;// incrementa o conta trocas
 	}
 
 	public static int getSelectionSortChangesCounter() {
-		return SelectionSortChangesCounter;
+		return selectionSortChangesCounter;
 	}
 
 	public static int getSelectionSortComparisonsCounter() {
-		return SelectionSortComparisonsCounter;
+		return selectionSortComparisonsCounter;
 	}
 	
 	
