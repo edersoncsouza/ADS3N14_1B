@@ -1,3 +1,10 @@
+/*
+ * Classe HeapSort
+ * Implementa os metodos para aplicar o algoritmo HeapSort a um vetor de inteiros.
+ * 
+ * @author Ederson Souza
+ */
+
 public class HeapSort {
 	private static int changesCounter=0, comparisonsCounter=0, heapifyCounter = 0;;
 	
@@ -20,6 +27,12 @@ public class HeapSort {
 		}
 	}
 
+	/*
+	 * Metodo builMaxHeap
+	 * Transforma o vetor recebido em uma arvore com a regra MaxHeap
+	 * 
+	 * @param v: vetor de inteiros
+	 */
 	private static void buildMaxHeap(int[] v) {
 		for (int i = v.length / 2 - 1; i >= 0; i--){
 			maxHeapify(v, i, v.length);
@@ -27,27 +40,44 @@ public class HeapSort {
 		}
 	}
 
+	/*
+	 * Metodo maxHeapify
+	 * Corrige o vetor alterado recebido para mante-lo com a regra MaxHeap
+	 * 
+	 * @param v: vetor de inteiros
+	 * @param pos: elemento lido
+	 * @param n: tamanho do vetor
+	 */
+	
 	private static void maxHeapify(int[] v, int pos, int n) {
 		int maxi;
-		int l = 2 * pos + 1;
-		int right = 2 * pos + 2;
-		if ((l < n) && (v[l] > v[pos])) {
-			maxi = l;
+		int l = 2 * pos + 1;// no filho da esquerda
+		int right = 2 * pos + 2;// no filho da direita
+		if ((l < n) && (v[l] > v[pos])) {// se l nao for o ultimo no e for maior que o pai
+			maxi = l;// no maximo recebe o conteudo do filho da esquerda
 		} else {
-			maxi = pos;
+			maxi = pos;// no maximo recebe o conteudo lido
 		}
 		comparisonsCounter++;// incrementa o conta comparacoes
 		
-		if (right < n && v[right] > v[maxi]) {
+		if (right < n && v[right] > v[maxi]) {// se right (filho da direita) nao for o ultimo no e for maior que o pai
 			comparisonsCounter++;// incrementa o conta comparacoes
-			maxi = right;
+			maxi = right;// no maximo recebe o conteudo do filho da direita
 		}
-		if (maxi != pos) {
+		if (maxi != pos) {// caso o mo maximo ja nao for o o conteudo lido
 			swap(v, pos, maxi);
 			maxHeapify(v, maxi, n);
 		}
 	}
 
+	/*
+	 * Metodo swap: Efetua a troca de lugar dos elementos para ordena-los.
+	 * 
+	 * @param v: vetor de inteiros
+	 * @param j: elemento anteriormente definido como menor, a ser trocado
+	 * @param aposJ: elemento menor detectado
+	 * 
+	 */
 	public static void swap(int[] v, int j, int aposJ) {
 		int aux = v[j];
 		v[j] = v[aposJ];
@@ -69,10 +99,14 @@ public class HeapSort {
 		return heapifyCounter;
 	}
 
-	public static void setHeapifyCounter(int heapifyCounter) {
-		HeapSort.heapifyCounter = heapifyCounter;
-	}
-
+/*
+ * Metodo imprimeVetor
+ * Imprime o vetor recebido destacando os valores que estao em swap no momento
+ * 
+ * @param vetor: vetor de inteiros
+ * @param j: primeiro valor selecionado para troca
+ * @param aposJ: segundo valor selecionado para troca
+ */
 	public static void imprimeVetor(int[] vetor, int j, int aposJ){
 		StringBuffer stringVetor = new StringBuffer();
 		for (int i = 0; i < vetor.length; i++) {
