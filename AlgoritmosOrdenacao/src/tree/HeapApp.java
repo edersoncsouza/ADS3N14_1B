@@ -23,7 +23,7 @@ public class HeapApp {
             line = sc.next();
         }
          
-        while (!hp.isEmpty()) {
+        while (!hp.isEmpty()) {//enquato o heap nao estiver vazio
             int max = hp.delete();
             System.out.println(max + " " + hp);
         }
