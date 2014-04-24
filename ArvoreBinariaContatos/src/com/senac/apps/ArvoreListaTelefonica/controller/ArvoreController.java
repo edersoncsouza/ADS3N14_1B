@@ -56,18 +56,21 @@ public class ArvoreController <T extends Comparable<T>>{
 	
 	public void loadFile(String filename) {
 		T chave;
+		Nodo<Pessoa> pessoaNodo;
 		try {
 			Scanner arq = new Scanner(new FileReader(filename));
 			while(arq.hasNext()) {
 				String name = arq.nextLine();
 				String phone = arq.nextLine();
-				Pessoa pessoa = new Pessoa(name);
-				pessoa.setTelefone(phone);
-				//arquivo.insert(new Nodo<Pessoa>(pessoa));
-				chave=pessoa;
-				insert(new Nodo<Pessoa>(pessoa,null,null),pessoa.getNome());
+				Pessoa pessoaObjeto = new Pessoa(name);
+				pessoaObjeto.setTelefone(phone);
 				
+				pessoaNodo.setChave(pessoaObjeto.getNome());
+				
+				//arquivo.insert(new Nodo<Pessoa>(pessoa));
 
+				insert(new Nodo<Pessoa>(pessoaObjeto),chave);
+				
 		} catch (FileNotFoundException e) {
 			view.logError(e.getMessage());
 		}
