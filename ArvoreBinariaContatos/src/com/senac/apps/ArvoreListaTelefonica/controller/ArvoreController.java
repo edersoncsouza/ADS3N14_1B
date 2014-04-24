@@ -8,24 +8,54 @@ import java.util.Scanner;
 
 import com.senac.apps.ArvoreListaTelefonica.model.Pessoa;
 import com.senac.apps.ArvoreListaTelefonica.view.ArvoreListaTelefonicaConsoleView;
+import com.senac.estruturas.Arvore;
 import com.senac.estruturas.ListaEncadeada;
 import com.senac.estruturas.ListaOrdenada;
 import com.senac.estruturas.Nodo;
 
-public class ArvoreController {
-	private ListaEncadeada<Pessoa> arquivo;
-	private ListaOrdenada<Pessoa> contatos;
+public class ArvoreController <T extends Comparable<T>>{
+
+	private Nodo<T> raiz;
+	
 	private ArvoreListaTelefonicaConsoleView view;
 	private Nodo<Pessoa> current;
 	
 	public ArvoreController(ArvoreListaTelefonicaConsoleView view) {
 		this.view = view;
-		this.contatos = new ListaOrdenada<Pessoa>();
-		this.arquivo  = new ListaEncadeada<Pessoa>();
-		this.current = null;
+		raiz = null;	
 	}
 
+	 /** 
+	   Inserts the given data into the binary tree. 
+	   Uses a recursive helper. 
+	  */ 
+	  public void insert(T chave) { 
+	    raiz = insert(raiz, chave); 
+	  } 
+	
+	private Nodo<T> insert (Nodo<T> novo, T chave){
+		if (novo == null){
+			novo = new Nodo<T>(chave);
+		}
+		if(novo.getChave().equals(chave)){
+			System.out.println("Chave duplicada, nao sera incluida na arvore!");
+		}
+		
+		if (chave.compareTo(novo.getChave()) < 0) {
+	        // adiciona a chave a sub-arvore esquerda
+	        novo.setFilhoEsquerda(insert(novo.getFilhoEsquerda(),chave));
+	        
+	    }
+		else{// adiciona a chave a sub-arvore direita
+			novo.setFilhoDireita(insert(novo.getFilhoDireita(),chave));
+			
+		}
+		return novo;
+	}
+		
+	
 	public void loadFile(String filename) {
+		T chave;
 		try {
 			Scanner arq = new Scanner(new FileReader(filename));
 			while(arq.hasNext()) {
@@ -33,11 +63,11 @@ public class ArvoreController {
 				String phone = arq.nextLine();
 				Pessoa pessoa = new Pessoa(name);
 				pessoa.setTelefone(phone);
-				arquivo.insert(new Nodo<Pessoa>(pessoa));
-				if (!name.startsWith("#"))
-					contatos.insert(new Nodo<Pessoa>(pessoa));
-			}
-			current = contatos.getHead();
+				//arquivo.insert(new Nodo<Pessoa>(pessoa));
+				chave=pessoa;
+				insert(new Nodo<Pessoa>(pessoa,null,null),pessoa.getNome());
+				
+
 		} catch (FileNotFoundException e) {
 			view.logError(e.getMessage());
 		}

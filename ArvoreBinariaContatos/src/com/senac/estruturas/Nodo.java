@@ -1,42 +1,38 @@
 package com.senac.estruturas;
 
 public class Nodo<T> {
-	private T data;
-	private Nodo<T> next;
-	private Nodo<T> prev;
+	private T chave;
+	private Nodo<T> filhoEsquerda, filhoDireita;
 	
-	public Nodo()
+	public Nodo(T chave)
 	{
-		data = null;
-		next = null;
+		this.chave = chave;
+		this.filhoEsquerda = null;
+		this.filhoDireita = null;
+	}
+	
+	public T getChave() {
+		return chave;
+	}
+	
+	public Nodo<T> getFilhoEsquerda() {
+		return filhoEsquerda;
 	}
 
-	public Nodo(T chave) {
-		this.data = chave;
-		this.next = null;
+	public Nodo<T> getFilhoDireita() {
+		return filhoDireita;
+	}
+	
+	public void setChave(T chave) {
+		this.chave = chave;
 	}
 
-	public T getData() {
-		return data;
+	public void setFilhoEsquerda(Nodo<T> filhoEsquerda) {
+		this.filhoEsquerda = filhoEsquerda;
 	}
 
-	public void setData(T data) {
-		this.data = data;
+	public void setFilhoDireita(Nodo<T> filhoDireita) {
+		this.filhoDireita = filhoDireita;
 	}
-
-	public Nodo<T> getNext() {
-		return next;
-	}
-
-	public void setNext(Nodo<T> next) {
-		this.next = next;
-	}
-
-	public Nodo<T> getPrevious() {
-		return prev;
-	}
-
-	public void setPrevious(Nodo<T> prev) {
-		this.prev = prev;
-	}
+	
 }
