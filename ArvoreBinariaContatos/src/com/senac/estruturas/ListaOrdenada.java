@@ -3,10 +3,11 @@ package com.senac.estruturas;
 public class ListaOrdenada<T extends Comparable<T>>
 				extends ListaEncadeada<T>
 {	
-	public Nodo<T> procuraNodo(Nodo<T> needle)
+	/*
+	public NodoListaEncadeada<T> procuraNodo(NodoListaEncadeada<T> needle)
 	{
-		Nodo<T> atual = getHead();
-		Nodo<T> anterior = null;
+		NodoListaEncadeada<T> atual = getHead();
+		NodoListaEncadeada<T> anterior = null;
 		T chaveNeedle = needle.getData();
 		
 		while (atual != null) {
@@ -23,21 +24,21 @@ public class ListaOrdenada<T extends Comparable<T>>
 	}
 	
 	@Override
-	public void append(Nodo<T> novo)
+	public void append(NodoListaEncadeada<T> novo)
 	{
 		insert(novo);
 	}
 	
 	@Override
-	public void insert(Nodo<T> novo, Nodo<T> anterior)
+	public void insert(NodoListaEncadeada<T> novo, NodoListaEncadeada<T> anterior)
 	{
 		insert(novo);
 	}
 	
 	@Override
-	public void insert(Nodo<T> novo)
+	public void insert(NodoListaEncadeada<T> novo)
 	{
-		Nodo<T> anterior = procuraNodo(novo);
+		NodoListaEncadeada<T> anterior = procuraNodo(novo);
 		
 		if (anterior == null) {
 			novo.setNext(head);
@@ -47,7 +48,7 @@ public class ListaOrdenada<T extends Comparable<T>>
 			if (tail == null)
 				tail = novo;
 		} else {
-			Nodo<T> prox = anterior.getNext(); 
+			NodoListaEncadeada<T> prox = anterior.getNext(); 
 			novo.setNext(prox);
 			novo.setPrevious(anterior);
 			anterior.setNext(novo);
@@ -57,4 +58,5 @@ public class ListaOrdenada<T extends Comparable<T>>
 				prox.setPrevious(novo);
 		}
 	}
+	*/
 }

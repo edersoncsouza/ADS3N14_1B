@@ -1,7 +1,7 @@
 package com.senac.estruturas;
 
 public class ListaEncadeada<T> {
-
+/*
 	protected Nodo<T> head;
 	protected Nodo<T> tail;
 
@@ -69,4 +69,5 @@ public class ListaEncadeada<T> {
 		else
 			tail = ant;
 	}
+	*/
 }

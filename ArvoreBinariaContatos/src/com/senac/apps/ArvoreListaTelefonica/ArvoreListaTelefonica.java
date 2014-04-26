@@ -15,20 +15,22 @@ public class ArvoreListaTelefonica {
 		while (!command.equals("sair")) {
 			controller.showContato();
 			command = view.readString("Comando").toLowerCase();
+			/*
 			if (command.equals("avancar"))
 				controller.nextContato();
 			if (command.equals("voltar"))
-				controller.previousContato();
+				controller.previousContato();*/
 			if (command.equals("inserir"))
 				controller.insertContato();
+			/*
 			if (command.equals("excluir"))
 				controller.removeContato();
 			if (command.equals("procurar"))
-				controller.searchContato();
+				controller.searchContato();*/
 			if (command.equals("ajuda"))
 				view.showMessage("ajuda  avancar  voltar  inserir  excluir  procurar  sair");
 		}
-		controller.saveFile("telefones.dat");
+		//controller.saveFile("telefones.dat");
 	}
 
 }
