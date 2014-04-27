@@ -16,14 +16,16 @@ public class ListaTelefonica {
 		while (!command.equals("sair")) {
 			//controller.showContato();
 			command = view.read("Comando").toLowerCase();
+			if (command.equals("raiz"))
+				controller.exibeRaiz();
 			if (command.equals("inserir"))
 				controller.insertContato();
 			if (command.equals("excluir"))
-				//controller.removeContato();
+				controller.removeContato();
 			if (command.equals("procurar"))
-				//controller.searchContato("sequencial");
+				controller.searchContato("sequencial");
 			if (command.equals("ajuda"))
-				view.message("ajuda  inserir  excluir  procurar procurarbin sair");
+				view.message("ajuda  raiz   inserir  excluir  procurar sair");
 		}
 		//controller.saveFile("telefones.dat");
 	}

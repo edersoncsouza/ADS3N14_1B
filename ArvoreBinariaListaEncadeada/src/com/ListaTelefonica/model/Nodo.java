@@ -12,7 +12,7 @@ public class Nodo<T> {
 	public Nodo(T chave, T data)
 	{
 		this.chave = chave;
-		this.data = null;
+		this.data = data;
 	}
 
 	public T getData() {

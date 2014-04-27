@@ -14,7 +14,7 @@ import com.ListaTelefonica.view.*;
 public class Arvore <T extends Comparable<T>>{
 
 	public ConsoleView view;
-	private Nodo<T> raiz;
+	private Nodo<T> raiz, current;
 	
 	
 	public Arvore(ConsoleView view) {
@@ -51,6 +51,18 @@ public class Arvore <T extends Comparable<T>>{
 	}
 	 */
 	
+	public void insertContato() {
+
+		String name = (view.readString("Nome"));
+		String phone = (view.readString("Telefone"));
+		
+		Pessoa<T> pessoa = new Pessoa(name);
+		pessoa.setTelefone(phone);
+		
+		T chave = (T) name;
+		
+		insereNodo(chave, (T) pessoa);
+	}
 	
 	public void insereNodo(T chave, T data) {
 		Nodo<T> novo = new Nodo<T>(chave, data);
@@ -89,28 +101,13 @@ public class Arvore <T extends Comparable<T>>{
 		}//fim do while perpetuo
 	}//fim do metodo insereNodo
 	
-	
-	public void insertContato() {
-
-		String name = (view.readString("Nome"));
-		String phone = (view.readString("Telefone"));
-		
-		Pessoa<T> pessoa = new Pessoa(name);
-		pessoa.setTelefone(phone);
-		
-		T chave = (T) name;
-		
-		if (!name.startsWith("#"))
-			insereNodo(chave, (T) pessoa);
-	}
-
-	
 	public void loadFile(String filename) {
 		try {
 			Scanner arq = new Scanner(new FileReader(filename));
 			while(arq.hasNext()) {
 				String name = arq.nextLine();
 				String phone = arq.nextLine();
+				
 				Pessoa<T> pessoa = new Pessoa(name);
 				pessoa.setTelefone(phone);
 				
@@ -118,13 +115,17 @@ public class Arvore <T extends Comparable<T>>{
 				
 				if (!name.startsWith("#"))
 					insereNodo(chave, (T) pessoa);
-
+				/*
+				T teste = raiz.getData();
+				System.out.println(teste.toString());
+				
+				pessoa = (Pessoa<T>) raiz.getData();
+				System.out.println("Nome recuperado do nodo raiz: " + pessoa.getNome());
+				*/
 			}
-			//current = contatos.getHead();
 		} catch (FileNotFoundException e) {
 			view.logError(e.getMessage());
 		}
-		//fillArray(listSize);
 	}
 
 	/*
@@ -151,14 +152,14 @@ public class Arvore <T extends Comparable<T>>{
 			view.printContato(contato.getNome(), contato.getTelefone());
 		}
 	}
-
+*/
 	public void removeContato() {
 		if (current != null) {
-			contatos.remove(current);
-			nextContato();
+			//contatos.remove(current);
+			//nextContato();
 		}
 	}
-
+/*
 	private Nodo<Pessoa> procuraContato(ListaEncadeada<Pessoa> lista, String chave)
 	{
 		Nodo<Pessoa> iter = lista.getHead();
@@ -211,11 +212,11 @@ public class Arvore <T extends Comparable<T>>{
 		return null;
 	}
 	
-
+*/
 	public void searchContato(String tipo) {
 		String chave = view.read("Inicio do Nome").toLowerCase();
 		Nodo<Pessoa> contato = null;
-			
+		/*	
 		if(tipo.equals("sequencial"))
 		contato = procuraContato(contatos, chave);
 		
@@ -224,8 +225,16 @@ public class Arvore <T extends Comparable<T>>{
 		
 		if (contato != null)
 			current = contato;
+			*/
 	}
-*/
+
+
+	public void exibeRaiz() {
+		T contatoT = raiz.getData();
+		Pessoa contato = (Pessoa) contatoT;
+		view.printContato(contato.getNome(), contato.getTelefone());	
+	}
+
 
 	/*
 	public void saveFile(String filename) {
