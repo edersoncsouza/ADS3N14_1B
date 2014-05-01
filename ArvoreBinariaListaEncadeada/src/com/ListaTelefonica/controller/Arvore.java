@@ -201,6 +201,7 @@ public class Arvore<T extends Comparable<T>> {
 				// parent node
 				if (chave.compareTo(atual.getChave()) < 0)
 					// Switch focus to the left child
+					pai = atual;//Alterado pra consertar a insercao
 					atual = atual.getFilhoDaEsquerda();
 
 				// If the left child has no children
@@ -210,9 +211,10 @@ public class Arvore<T extends Comparable<T>> {
 					return; // All Done
 				}
 				// If we get here put the node on the right
-				else
+				else{
+					pai = atual;//Alterado pra consertar a insercao
 					atual = atual.getFilhoDaDireita();
-
+				}
 				// If the right child has no children
 				if (atual == null) {
 					// then place the new node on the right of it
@@ -233,7 +235,7 @@ public class Arvore<T extends Comparable<T>> {
 				Pessoa<T> pessoa = new Pessoa(name);
 				pessoa.setTelefone(phone);
 
-				T chave = (T) name;
+				T chave = (T) name.toLowerCase();
 
 				if (!name.startsWith("#"))
 					insereNodo(chave, (T) pessoa);
