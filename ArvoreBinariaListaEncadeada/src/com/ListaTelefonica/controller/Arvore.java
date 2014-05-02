@@ -3,7 +3,6 @@
 //http://rosettacode.org/wiki/Tree_traversal#Java
 //http://mattcb.blogspot.com.br/2012/12/binary-search-tree-serialize-and.html
 
-
 package com.ListaTelefonica.controller;
 
 import java.io.FileNotFoundException;
@@ -20,33 +19,33 @@ import com.ListaTelefonica.view.*;
 public class Arvore<T extends Comparable<T>> {
 
 	public ConsoleView view;
-	private Nodo<T> raiz, current;
+	private Nodo<T> root, current;
 
 	public Arvore(ConsoleView view) {
 		this.view = view;
-		this.raiz = null;
+		this.root = null;
 	}
 
 	public Nodo<T> getRaiz() {
-		return raiz;
+		return root;
 	}
 
 	public void setRaiz(Nodo<T> raiz) {
-		this.raiz = raiz;
+		this.root = raiz;
 	}
 
 	public boolean isEmpty() {
-		Boolean vazio;
-		if (raiz != null)
-			vazio = false;
+		Boolean empty;
+		if (root != null)
+			empty = false;
 		else
-			vazio = true;
-		return vazio;
+			empty = true;
+		return empty;
 	}
 
 	public void postorder() {
 		if (!isEmpty())
-			postorder(raiz);
+			postorder(root);
 		else
 			System.out.println("Arvore vazia.");
 	}
@@ -63,7 +62,7 @@ public class Arvore<T extends Comparable<T>> {
 
 	public void preorder() {
 		if (!isEmpty())
-			preorder(raiz);
+			preorder(root);
 		else
 			System.out.println("Arvore vazia.");
 	}
@@ -80,7 +79,7 @@ public class Arvore<T extends Comparable<T>> {
 
 	public void inorder() {
 		if (!isEmpty())
-			inorder(raiz);
+			inorder(root);
 		else
 			System.out.println("Arvore vazia.");
 	}
@@ -96,104 +95,65 @@ public class Arvore<T extends Comparable<T>> {
 		}
 	}
 
-	public void exibeRaiz() {
-		T contatoT = raiz.getData();
-		Pessoa contato = (Pessoa) contatoT;
-		view.printContato(contato.getNome(), contato.getTelefone());
+	public void levelorder() {
+		if (!isEmpty())
+			levelorder(root);
+		else
+			System.out.println("Arvore vazia.");
 	}
 
-	public void showContato(Nodo<T> nodo) {
-		T contatoT = nodo.getData();
-		Pessoa contato = (Pessoa) contatoT;
-		view.printContato(contato.getNome(), contato.getTelefone());
-	}
+	public void levelorder(Nodo<T> nodo) {
+		Queue<Nodo<T>> enfileraNodo = new LinkedList<Nodo<T>>();
+		if (nodo != null)
+			enfileraNodo.add(nodo);
+		while (!enfileraNodo.isEmpty()) {
+			Nodo<T> next = enfileraNodo.remove();
 
-	public void inserir() {
+			showContact(next);
+			// System.out.print(next.getData() + " ");
 
-		String name = (view.readString("Nome"));
-		String phone = (view.readString("Telefone"));
-
-		Pessoa<T> pessoa = new Pessoa(name);
-		pessoa.setTelefone(phone);
-
-		T chave = (T) name;
-
-		inserir(chave, (T) pessoa);
-
-	}
-	
-	public void inserir(T chave, T data) {
-		Nodo<T> novo = new Nodo<T>(chave, data);
-
-		showContato(novo);// para teste
-		
-		if (raiz == null) {
-			raiz = novo;
-		} else {
-			Nodo<T> atual = raiz;
-			Nodo<T> pai;
-			pai = atual;// atual comeca valendo raiz
-
-			// Verifica se o valor a ser inserido é menor que o nodo corrente da
-			// árovre, se sim vai para subarvore esquerda
-			if (chave.compareTo(atual.getChave()) < 0) {
-				// if (valor < node.valor) {
-				// Se tiver elemento no nodo esquerdo continua a busca
-				if (novo.getFilhoDaEsquerda() != null) {
-					chave = novo.getFilhoDaEsquerda().getChave();
-					data = novo.getFilhoDaEsquerda().getData();
-					inserir(chave, data);
-				} else {
-					// Se nodo esquerdo vazio insere o novo nodo aqui
-					// System.out.println(" Inserindo " + valor +
-					// " a esquerda de "+ node.valor);
-					// node.esquerda = new No(valor);
-					novo.setFilhoDaEsquerda(novo);
-				}
-				// Verifica se o valor a ser inserido é maior que o nodo
-				// corrente da
-				// árvore, se sim vai para subarvore direita
-			} else if (chave.compareTo(atual.getChave()) > 0) {
-				// Se tiver elemento no nodo direito continua a busca
-				// if (node.direita != null) {
-				if (novo.getFilhoDaDireita() != null) {
-					chave = novo.getFilhoDaDireita().getChave();
-					data = novo.getFilhoDaDireita().getData();
-					inserir(chave, data);
-				} else {
-					// Se nodo direito vazio insere o novo nodo aqui
-					// System.out.println(" Inserindo " + valor +
-					// " a direita de " + node.valor);
-					// node.direita = new No(valor);
-					novo.setFilhoDaDireita(novo);
-				}
+			if (next.getFilhoDaEsquerda() != null) {
+				enfileraNodo.add(next.getFilhoDaEsquerda());
+			}
+			if (next.getFilhoDaDireita() != null) {
+				enfileraNodo.add(next.getFilhoDaDireita());
 			}
 		}
 	}
+	
+	public void showRoot() {
+		T contactT = root.getData();
+		Pessoa contact = (Pessoa) contactT;
+		view.printContato(contact.getNome(), contact.getTelefone());
+	}
 
-	public void insertContato() {
+	public void showContact(Nodo<T> nodo) {
+		T contactT = nodo.getData();
+		Pessoa contact = (Pessoa) contactT;
+		view.printContato(contact.getNome(), contact.getTelefone());
+	}
 
+	public void insertContact() {
 		String name = (view.readString("Nome"));
 		String phone = (view.readString("Telefone"));
 
-		Pessoa<T> pessoa = new Pessoa(name);
-		pessoa.setTelefone(phone);
+		Pessoa<T> contact = new Pessoa(name);
+		contact.setTelefone(phone);
 
-		T chave = (T) name;
+		T key = (T) name;
 
-		insereNodo(chave, (T) pessoa);
-
+		insertContact(key, (T) contact);
 	}
 
-	public void insereNodo(T chave, T data) {
-		Nodo<T> novo = new Nodo<T>(chave, data);
+	public void insertContact(T key, T data) {
+		Nodo<T> novo = new Nodo<T>(key, data);
 
-		showContato(novo);// para teste
+		showContact(novo);// para teste
 
-		if (raiz == null) {
-			raiz = novo;
+		if (root == null) {
+			root = novo;
 		} else {
-			Nodo<T> atual = raiz;
+			Nodo<T> atual = root;
 			Nodo<T> pai;
 
 			while (true) {// While perpetuo
@@ -201,10 +161,10 @@ public class Arvore<T extends Comparable<T>> {
 
 				// Check if the new node should go on the left side of the
 				// parent node
-				if (chave.compareTo(atual.getChave()) < 0)
+				if (key.compareTo(atual.getChave()) < 0)
 					// Switch focus to the left child
-					pai = atual;//Alterado pra consertar a insercao
-					atual = atual.getFilhoDaEsquerda();
+					pai = atual;// Alterado pra consertar a insercao
+				atual = atual.getFilhoDaEsquerda();
 
 				// If the left child has no children
 				if (atual == null) {
@@ -213,8 +173,8 @@ public class Arvore<T extends Comparable<T>> {
 					return; // All Done
 				}
 				// If we get here put the node on the right
-				else{
-					pai = atual;//Alterado pra consertar a insercao
+				else {
+					pai = atual;// Alterado pra consertar a insercao
 					atual = atual.getFilhoDaDireita();
 				}
 				// If the right child has no children
@@ -226,6 +186,45 @@ public class Arvore<T extends Comparable<T>> {
 			}
 		}// fim do while perpetuo
 	}// fim do metodo insereNodo
+
+	public String preOrderIterative() {
+		StringBuilder sb = new StringBuilder();
+		preOrderIterative(root, sb);
+		return sb.toString();
+	}
+
+	private void preOrderIterative(Nodo<T> nodo, StringBuilder sb) {
+		if (nodo == null) {
+			sb.append("#" + "\n");
+			return;
+		}
+		Pessoa<T> contact = (Pessoa<T>) nodo.getData();
+		sb.append(contact.getNome() + "\n");
+		sb.append(contact.getTelefone() + "\n");
+
+		preOrderIterative(nodo.getFilhoDaEsquerda(), sb);
+		preOrderIterative(nodo.getFilhoDaDireita(), sb);
+	}
+
+	public void saveFile(String filename) {
+		FileWriter arq = null;
+		try {
+			arq = new FileWriter(filename, false);
+			//Nodo<Pessoa> iter = arquivo.getHead();
+			
+			arq.write(preOrderIterative());
+			
+		} catch (IOException e) {
+			view.message(e.getMessage());
+		} finally {
+			if (arq != null)
+				try {
+					arq.close();
+				} catch (IOException e) {
+					view.message(e.getMessage());
+				}
+		}
+	}
 
 	public void loadFile(String filename) {
 		try {
@@ -240,8 +239,8 @@ public class Arvore<T extends Comparable<T>> {
 				T chave = (T) name.toLowerCase();
 
 				if (!name.startsWith("#"))
-					insereNodo(chave, (T) pessoa);
-					//inserir(chave, (T) pessoa);
+					insertContact(chave, (T) pessoa);
+				// inserir(chave, (T) pessoa);
 			}
 		} catch (FileNotFoundException e) {
 			view.logError(e.getMessage());
@@ -255,32 +254,7 @@ public class Arvore<T extends Comparable<T>> {
 		}
 	}
 
-	public void levelorder() {
-		if (!isEmpty())
-			levelorder(raiz);
-		else
-			System.out.println("Arvore vazia.");
-	}
-
-	public void levelorder(Nodo<T> nodo) {
-		Queue<Nodo<T>> enfileraNodo = new LinkedList<Nodo<T>>();
-		if (nodo != null)
-			enfileraNodo.add(nodo);
-		while (!enfileraNodo.isEmpty()) {
-			Nodo<T> next = enfileraNodo.remove();
-
-			showContato(next);
-			// System.out.print(next.getData() + " ");
-
-			if (next.getFilhoDaEsquerda() != null) {
-				enfileraNodo.add(next.getFilhoDaEsquerda());
-			}
-			if (next.getFilhoDaDireita() != null) {
-				enfileraNodo.add(next.getFilhoDaDireita());
-			}
-		}
-	}
-
+	
 	/*
 	 * private Nodo<Pessoa> procuraContato(ListaEncadeada<Pessoa> lista, String
 	 * chave) { Nodo<Pessoa> iter = lista.getHead(); while (iter != null) {
@@ -322,16 +296,4 @@ public class Arvore<T extends Comparable<T>> {
 		 */
 	}
 
-	/*
-	 * public void saveFile(String filename) { FileWriter arq = null; try { arq
-	 * = new FileWriter(filename,false); Nodo<Pessoa> iter = arquivo.getHead();
-	 * while (iter != null) { Pessoa contato = iter.getData(); if
-	 * (procuraContato(contatos, contato.getNome()) == null)
-	 * arq.append("#"+contato.getNome()+"\n"); else
-	 * arq.append(contato.getNome()+"\n");
-	 * arq.append(contato.getTelefone()+"\n"); iter = iter.getNext(); } } catch
-	 * (IOException e) { view.message(e.getMessage()); } finally { if (arq !=
-	 * null) try { arq.close(); } catch (IOException e) {
-	 * view.message(e.getMessage()); } } }
-	 */
 }

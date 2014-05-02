@@ -17,7 +17,7 @@ public class ListaTelefonica {
 			//controller.showContato();
 			command = view.read("Comando").toLowerCase();
 			if (command.equals("raiz"))
-				controller.exibeRaiz();
+				controller.showRoot();
 			if (command.equals("infixa"))
 				controller.inorder();
 			if (command.equals("prefixa"))
@@ -27,7 +27,7 @@ public class ListaTelefonica {
 			if (command.equals("nivel"))
 				controller.levelorder();;
 			if (command.equals("inserir"))
-				controller.insertContato();
+				controller.insertContact();
 			if (command.equals("excluir"))
 				controller.removeContato();
 			if (command.equals("procurar"))
@@ -35,7 +35,7 @@ public class ListaTelefonica {
 			if (command.equals("ajuda"))
 				view.message("ajuda  raiz  infixa  prefixa  posfixa  nivel  inserir  excluir  procurar  sair");
 		}
-		//controller.saveFile("telefones.dat");
+		controller.saveFile("telefones.dat");
 	}
 
 }
