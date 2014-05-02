@@ -31,7 +31,8 @@ public class ListaTelefonica {
 			if (command.equals("excluir"))
 				controller.removeContato();
 			if (command.equals("procurar"))
-				controller.searchContato();
+				//controller.searchContact();
+				controller.locate();
 			if (command.equals("ajuda"))
 				view.message("ajuda  raiz  infixa  prefixa  posfixa  nivel  inserir  excluir  procurar  sair");
 		}

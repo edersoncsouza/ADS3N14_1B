@@ -120,7 +120,7 @@ public class Arvore<T extends Comparable<T>> {
 			}
 		}
 	}
-	
+
 	public void showRoot() {
 		T contactT = root.getData();
 		Pessoa contact = (Pessoa) contactT;
@@ -133,6 +133,80 @@ public class Arvore<T extends Comparable<T>> {
 		view.printContato(contact.getNome(), contact.getTelefone());
 	}
 
+	public void locate() {
+		Nodo<T> foundNode = null;
+		Pessoa<T> contact = null;
+
+		T key = (T) view.read("Nome do contato").toLowerCase();
+
+		foundNode = locate(root, key);
+
+		if (foundNode != null) {
+			contact = (Pessoa<T>) foundNode.getData();
+			view.printContato(contact.getNome(), contact.getTelefone());
+		} else
+			view.printContato("Contato nao encontrado",
+					"Telefone nao encontrado");
+	}
+
+	public Nodo<T> locate(Nodo<T> t, T key) {
+
+		if (t == null || key.equals(t.getChave()))// == t.getChave())
+			return t;
+		else if (key.compareTo(t.getChave()) < 0)
+			return locate(t.getFilhoDaEsquerda(), key);
+		else
+			return locate(t.getFilhoDaDireita(), key);
+	}
+
+	public void searchContact() {
+		T data = null;
+		Pessoa<T> contact = null;
+
+		T key = (T) view.read("Nome do contato").toLowerCase();
+
+		if (root == null)// caso nao existam nodos
+			view.printContato("Arvore vazia!", null);
+		else
+			contact = searchContact(root, key);
+		if (contact != null)
+			view.printContato(contact.getNome(), contact.getTelefone());
+		else
+			view.printContato("Contato nao encontrado", null);
+	}
+
+	public Pessoa<T> searchContact(Nodo<T> parent, T key) {
+		Pessoa<T> contact = null;
+		if (parent == null)
+			return contact;
+
+		contact = (Pessoa<T>) parent.getData(); // armazena o contato do nodo
+												// recebido
+
+		if (key.compareTo(parent.getChave()) == 0) {
+			return contact;
+		} else {
+
+			while (true) { // While perpetuo
+				// compara para saber se deve ir a esquerda do nodo
+				if (key.compareTo(parent.getChave()) < 0) {
+					if (parent.getFilhoDaEsquerda() != null)// se o nodo nao for
+															// nulo
+						// chama o metodo fornecendo o filho da esquerda
+						searchContact(parent.getFilhoDaEsquerda(), key);
+				} else {
+					if (key.compareTo(parent.getChave()) > 0) {
+						if (parent.getFilhoDaDireita() != null)// se o nodo nao
+																// for nulo
+							// chama o metodo fornecendo o filho da direita
+							searchContact(parent.getFilhoDaDireita(), key);
+					}
+				}
+				return contact;
+			} // fim do while perpetuo
+		}
+	}
+
 	public void insertContact() {
 		String name = (view.readString("Nome"));
 		String phone = (view.readString("Telefone"));
@@ -140,7 +214,8 @@ public class Arvore<T extends Comparable<T>> {
 		Pessoa<T> contact = new Pessoa(name);
 		contact.setTelefone(phone);
 
-		T key = (T) name;
+		T key = (T) name.toLowerCase(); // armazena a chave como o nome em
+										// lowercase
 
 		insertContact(key, (T) contact);
 	}
@@ -148,79 +223,91 @@ public class Arvore<T extends Comparable<T>> {
 	public void insertContact(T key, T data) {
 		Nodo<T> novo = new Nodo<T>(key, data);
 
-		showContact(novo);// para teste
-
-		if (root == null) {
-			root = novo;
+		if (root == null) { // caso nao existam nodos
+			root = novo; // nodo novo sera a raiz
 		} else {
-			Nodo<T> atual = root;
-			Nodo<T> pai;
+			Nodo<T> atual = root;// posiciona na raiz
+			Nodo<T> pai; // declara variavel pai
 
-			while (true) {// While perpetuo
-				pai = atual;// atual comeca valendo raiz
+			while (true) { // While perpetuo
+				pai = atual; // pai e atual comecam valendo raiz
 
-				// Check if the new node should go on the left side of the
-				// parent node
-				if (key.compareTo(atual.getChave()) < 0)
-					// Switch focus to the left child
-					pai = atual;// Alterado pra consertar a insercao
-				atual = atual.getFilhoDaEsquerda();
+				// compara para saber se deve ir a esquerda do nodo
+				if (key.compareTo(atual.getChave()) < 0) {
+					// se encaminha a esquerda
+					pai = atual; // armazena o nodo de entrada (pai)
+					atual = atual.getFilhoDaEsquerda(); // avanca para o filho da esquerda
 
-				// If the left child has no children
-				if (atual == null) {
-					// then place the new node on the left of it
-					pai.setFilhoDaEsquerda(novo);
-					return; // All Done
-				}
-				// If we get here put the node on the right
+					// se nao houver filho da esquerda
+					if (atual == null) {
+						// define no nodo pai que o filho da esquerda e o nodo novo
+						pai.setFilhoDaEsquerda(novo); // atribui o nodo novo como filho da esquerda
+						return; // sai do metodo
+					}
+				} // fim if < 0
+					// Caso a comparacao encaminhe a direita
 				else {
-					pai = atual;// Alterado pra consertar a insercao
-					atual = atual.getFilhoDaDireita();
-				}
-				// If the right child has no children
-				if (atual == null) {
-					// then place the new node on the right of it
-					pai.setFilhoDaDireita(novo);
-					return; // All Done
-				}
-			}
-		}// fim do while perpetuo
+					pai = atual; // armazena o nodo de entrada (pai)
+					atual = atual.getFilhoDaDireita(); // avanca para o filho da
+														// direita
+
+					// se nao houver filho da direita
+					if (atual == null) {
+						// define no nodo pai que o filho da direita e o nodo novo
+						pai.setFilhoDaDireita(novo);
+						return; // sai do metodo
+					}
+				} // fim do else
+			} // fim do while perpetuo
+		}
 	}// fim do metodo insereNodo
 
 	public String preOrderIterative() {
-		StringBuilder sb = new StringBuilder();
-		preOrderIterative(root, sb);
-		return sb.toString();
+		StringBuilder sb = new StringBuilder(); // cria um novo stringbuilder
+												// (concatenador de string)
+		preOrderIterative(root, sb); // chama o metodo sobrecarregado
+		return sb.toString(); // retorna a string concatenada
 	}
 
 	private void preOrderIterative(Nodo<T> nodo, StringBuilder sb) {
+
+		// caso o nodo seja nulo
 		if (nodo == null) {
-			sb.append("#" + "\n");
+			// sb.append("#" + "\n"); // insere um sustenido ao inves do contato
 			return;
 		}
-		Pessoa<T> contact = (Pessoa<T>) nodo.getData();
-		sb.append(contact.getNome() + "\n");
-		sb.append(contact.getTelefone() + "\n");
 
+		// armazena os dados do nodo em contact para separar nome e telefone
+		Pessoa<T> contact = (Pessoa<T>) nodo.getData();
+		sb.append(contact.getNome() + "\n"); // insere o nome no stringbuilder
+		sb.append(contact.getTelefone() + "\n"); // insere o telefone no
+													// stringbuilder
+
+		// chama recursivamente o metodo encaminhando para o nodo da esquerda
 		preOrderIterative(nodo.getFilhoDaEsquerda(), sb);
+		// chama recursivamente o metodo encaminhando para o nodo da direita
 		preOrderIterative(nodo.getFilhoDaDireita(), sb);
 	}
 
 	public void saveFile(String filename) {
-		FileWriter arq = null;
+		FileWriter arq = null; // declara o arquivo de saida
 		try {
+			// instancia o arquivo com o nome recebido
 			arq = new FileWriter(filename, false);
-			//Nodo<Pessoa> iter = arquivo.getHead();
-			
+
+			// grava o arquivo com o retorno do metodo preOrderIterative
 			arq.write(preOrderIterative());
-			
+
 		} catch (IOException e) {
+			// caso haja excecao com o arquivo
 			view.message(e.getMessage());
 		} finally {
 			if (arq != null)
 				try {
+					// ao final do processo fecha o streaming
 					arq.close();
 				} catch (IOException e) {
+					// caso haja excecao com o arquivo
 					view.message(e.getMessage());
 				}
 		}
@@ -228,21 +315,32 @@ public class Arvore<T extends Comparable<T>> {
 
 	public void loadFile(String filename) {
 		try {
+			// declara e instancia o scanner fornecendo o arquivo como entrada
 			Scanner arq = new Scanner(new FileReader(filename));
-			while (arq.hasNext()) {
-				String name = arq.nextLine();
-				String phone = arq.nextLine();
 
-				Pessoa<T> pessoa = new Pessoa(name);
-				pessoa.setTelefone(phone);
+			while (arq.hasNext()) { // enquanto existir prox linha
+				String name = arq.nextLine(); // recebe a linha atual na string
+												// name
+				String phone = arq.nextLine(); // recebe a linha atual na string
+												// phone
 
-				T chave = (T) name.toLowerCase();
+				Pessoa<T> contact = new Pessoa(name); // cria e instancia o
+														// objeto contact
+				contact.setTelefone(phone); // adiciona o telefone ao objeto
 
+				// converte o nome para minusculas e armazena na variavel key
+				T key = (T) name.toLowerCase();
+
+				// se o nome nao iniciar com sustenido chama o metodo para
+				// inserir
 				if (!name.startsWith("#"))
-					insertContact(chave, (T) pessoa);
-				// inserir(chave, (T) pessoa);
+					insertContact(key, (T) contact);
+				/*
+				 * else name = arq.nextLine(); // inserido para evitar pegar
+				 * linhas com #
+				 */
 			}
-		} catch (FileNotFoundException e) {
+		} catch (FileNotFoundException e) { // caso nao encontre o arquivo
 			view.logError(e.getMessage());
 		}
 	}
@@ -254,7 +352,6 @@ public class Arvore<T extends Comparable<T>> {
 		}
 	}
 
-	
 	/*
 	 * private Nodo<Pessoa> procuraContato(ListaEncadeada<Pessoa> lista, String
 	 * chave) { Nodo<Pessoa> iter = lista.getHead(); while (iter != null) {
@@ -288,12 +385,5 @@ public class Arvore<T extends Comparable<T>> {
 	 * 
 	 * } }while (atual != null); return null; }
 	 */
-	public void searchContato() {
-		String chave = view.read("Inicio do Nome").toLowerCase();
-		Nodo<Pessoa> contato = null;
-		/*
-		 * if (contato != null) current = contato;
-		 */
-	}
 
 }

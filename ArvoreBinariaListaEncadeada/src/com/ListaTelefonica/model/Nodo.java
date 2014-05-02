@@ -6,6 +6,7 @@ public class Nodo<T> {
 	
 	private T chave;
 	private T data;
+	private Nodo<T> pai;
 	private Nodo<T> filhoDaEsquerda;
 	private Nodo<T> filhoDaDireita;
 	
@@ -43,5 +44,14 @@ public class Nodo<T> {
 	public void setFilhoDaDireita(Nodo<T> filhoDaDireita) {
 		this.filhoDaDireita = filhoDaDireita;
 	}
+
+	public Nodo<T> getPai() {
+		return pai;
+	}
+
+	public void setPai(Nodo<T> pai) {
+		this.pai = pai;
+	}
+	
 	
 }
