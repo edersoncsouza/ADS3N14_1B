@@ -1,6 +1,8 @@
 //http://www.devmedia.com.br/trabalhando-com-arvores-binarias-em-java/25749
 //http://www.mcs.csueastbay.edu/~bhecker/Previous%20Terms/CS-3240-Fall13/Examples/BinaryTree-2.java
 //http://rosettacode.org/wiki/Tree_traversal#Java
+//http://mattcb.blogspot.com.br/2012/12/binary-search-tree-serialize-and.html
+
 
 package com.ListaTelefonica.controller;
 
