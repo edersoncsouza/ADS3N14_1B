@@ -133,13 +133,13 @@ public class Arvore<T extends Comparable<T>> {
 		view.printContato(contact.getNome(), contact.getTelefone());
 	}
 
-	public void locate() {
+	public void locateContact() {
 		Nodo<T> foundNode = null;
 		Pessoa<T> contact = null;
 
 		T key = (T) view.read("Nome do contato").toLowerCase();
 
-		foundNode = locate(root, key);
+		foundNode = locateContact(root, key);
 
 		if (foundNode != null) {
 			contact = (Pessoa<T>) foundNode.getData();
@@ -149,62 +149,14 @@ public class Arvore<T extends Comparable<T>> {
 					"Telefone nao encontrado");
 	}
 
-	public Nodo<T> locate(Nodo<T> t, T key) {
+	public Nodo<T> locateContact(Nodo<T> nodo, T key) {
 
-		if (t == null || key.equals(t.getChave()))// == t.getChave())
-			return t;
-		else if (key.compareTo(t.getChave()) < 0)
-			return locate(t.getFilhoDaEsquerda(), key);
+		if (nodo == null || key.equals(nodo.getChave()))
+			return nodo;
+		else if (key.compareTo(nodo.getChave()) < 0)
+			return locateContact(nodo.getFilhoDaEsquerda(), key);
 		else
-			return locate(t.getFilhoDaDireita(), key);
-	}
-
-	public void searchContact() {
-		T data = null;
-		Pessoa<T> contact = null;
-
-		T key = (T) view.read("Nome do contato").toLowerCase();
-
-		if (root == null)// caso nao existam nodos
-			view.printContato("Arvore vazia!", null);
-		else
-			contact = searchContact(root, key);
-		if (contact != null)
-			view.printContato(contact.getNome(), contact.getTelefone());
-		else
-			view.printContato("Contato nao encontrado", null);
-	}
-
-	public Pessoa<T> searchContact(Nodo<T> parent, T key) {
-		Pessoa<T> contact = null;
-		if (parent == null)
-			return contact;
-
-		contact = (Pessoa<T>) parent.getData(); // armazena o contato do nodo
-												// recebido
-
-		if (key.compareTo(parent.getChave()) == 0) {
-			return contact;
-		} else {
-
-			while (true) { // While perpetuo
-				// compara para saber se deve ir a esquerda do nodo
-				if (key.compareTo(parent.getChave()) < 0) {
-					if (parent.getFilhoDaEsquerda() != null)// se o nodo nao for
-															// nulo
-						// chama o metodo fornecendo o filho da esquerda
-						searchContact(parent.getFilhoDaEsquerda(), key);
-				} else {
-					if (key.compareTo(parent.getChave()) > 0) {
-						if (parent.getFilhoDaDireita() != null)// se o nodo nao
-																// for nulo
-							// chama o metodo fornecendo o filho da direita
-							searchContact(parent.getFilhoDaDireita(), key);
-					}
-				}
-				return contact;
-			} // fim do while perpetuo
-		}
+			return locateContact(nodo.getFilhoDaDireita(), key);
 	}
 
 	public void insertContact() {
@@ -280,8 +232,7 @@ public class Arvore<T extends Comparable<T>> {
 		// armazena os dados do nodo em contact para separar nome e telefone
 		Pessoa<T> contact = (Pessoa<T>) nodo.getData();
 		sb.append(contact.getNome() + "\n"); // insere o nome no stringbuilder
-		sb.append(contact.getTelefone() + "\n"); // insere o telefone no
-													// stringbuilder
+		sb.append(contact.getTelefone() + "\n"); // insere o telefone no stringbuilder
 
 		// chama recursivamente o metodo encaminhando para o nodo da esquerda
 		preOrderIterative(nodo.getFilhoDaEsquerda(), sb);
