@@ -29,6 +29,11 @@ public class Nodo<T> {
 		return chave;
 	}
 
+	
+	public void setChave(T chave) {
+		this.chave = chave;
+	}
+
 	public Nodo<T> getFilhoDaEsquerda() {
 		return filhoDaEsquerda;
 	}

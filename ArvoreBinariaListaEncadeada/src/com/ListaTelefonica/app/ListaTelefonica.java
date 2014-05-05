@@ -29,7 +29,8 @@ public class ListaTelefonica {
 			if (command.equals("inserir"))
 				controller.insertContact();
 			if (command.equals("excluir"))
-				controller.removeContato();
+				//controller.removeContato();
+				controller.deleteContact();
 			if (command.equals("procurar"))
 				controller.locateContact();
 			if (command.equals("ajuda"))
