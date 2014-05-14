@@ -159,6 +159,53 @@ public class Arvore<T extends Comparable<T>> {
 			return locateContact(nodo.getFilhoDaDireita(), key);
 	}
 
+	public void deleteContact(){
+		Nodo<T> foundNode = null;
+
+		T key = (T) view.read("Nome do contato a excluir").toLowerCase();
+
+		foundNode = locateContact(root, key);
+		
+		if (foundNode != null) {
+			foundNode = excluir(foundNode, key);
+			//System.out.println("Chave do nodo depois de excluir: " + foundNode.getChave());
+			view.printContato("Contato excluido com sucesso!",
+					"Telefone excluido!");
+		} else
+			view.printContato("Contato nao encontrado","Telefone nao encontrado");
+		}
+	
+	public Nodo<T> excluir(Nodo<T> nodo, T key) {
+        Nodo<T> p, p2;
+        if (key.equals(nodo.getChave())){
+        	System.out.println("Chave bateu!");
+            if (nodo.getFilhoDaEsquerda() == nodo.getFilhoDaDireita()) {
+            	System.out.println("Nodo sem filhos!");
+                return null;
+            } else if (nodo.getFilhoDaEsquerda() == null) {
+            	System.out.println("Nodo com filho a direita!");
+            	return nodo.getFilhoDaDireita();
+            } else if (nodo.getFilhoDaDireita() == null) {
+            	System.out.println("Nodo com filho a esquerda!");
+            	return nodo.getFilhoDaEsquerda();
+            } else {
+                p2 = nodo.getFilhoDaDireita();
+                p = nodo.getFilhoDaDireita();
+                while (p.getFilhoDaEsquerda() != null) {
+                    p = p.getFilhoDaEsquerda();
+                }
+                p.setFilhoDaEsquerda(nodo.getFilhoDaEsquerda());
+                System.out.println("Nodo com dois filhos!");
+                return p2;
+            }
+        } else if (key.compareTo(nodo.getChave()) < 0) {
+            nodo.setFilhoDaDireita(excluir(nodo.getFilhoDaDireita(), key));
+        } else {
+            nodo.setFilhoDaEsquerda(excluir(nodo.getFilhoDaEsquerda(), key));
+        }
+        return nodo;
+    }
+	
 	public void insertContact() {
 		String name = (view.readString("Nome"));
 		String phone = (view.readString("Telefone"));
