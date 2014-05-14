@@ -297,12 +297,19 @@ public class Arvore<T extends Comparable<T>> {
 	}
 
 	public void removeContato() {
-		if (current != null) {
-			// contatos.remove(current);
-			// nextContato();
+		Nodo<T> foundNode = null;
+		T key = (T) view.read("Nome do contato").toLowerCase();
+
+		foundNode = locateContact(root, key);
+		
+		if (foundNode != null) {
+			
+			if(foundNode.getFilhoDaEsquerda().getData() == null
+				&& foundNode.getFilhoDaDireita().getData() == null){
+				System.out.println("Nao tem filhos!");
+			}
 		}
 	}
-
 	/*
 	 * private Nodo<Pessoa> procuraContato(ListaEncadeada<Pessoa> lista, String
 	 * chave) { Nodo<Pessoa> iter = lista.getHead(); while (iter != null) {
