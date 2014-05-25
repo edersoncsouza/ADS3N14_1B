@@ -197,17 +197,19 @@ public class Arvore<T extends Comparable<T>> {
             if (nodo.getFilhoDaEsquerda() == nodo.getFilhoDaDireita()) {
             	System.out.println("Nodo sem filhos!");
             	System.out.println("Meu pai e: " + nodo.getPai().getChave());
-            	excluiFilho(nodo.getPai(),nodo);
+            	excluirFilho(nodo.getPai(),nodo); // apaga o nodo atual excluindo a referencia no pai
                 return null;
             } else if (nodo.getFilhoDaEsquerda() == null) {
             	System.out.println("Meu pai e: " + nodo.getPai().getChave());
             	System.out.println("Nodo com filho a direita!");
             	System.out.println("Filho da direita: " + nodo.getFilhoDaDireita().getChave());
+            	trocarPaiPeloFilho(nodo.getFilhoDaDireita(),nodo); // troca no pai a propria referencia pela do filho
             	return nodo.getFilhoDaDireita();
             } else if (nodo.getFilhoDaDireita() == null) {
             	System.out.println("Meu pai e: " + nodo.getPai().getChave());
             	System.out.println("Nodo com filho a esquerda!");
             	System.out.println("Filho da esquerda: " + nodo.getFilhoDaEsquerda().getChave());
+            	trocarPaiPeloFilho(nodo.getFilhoDaEsquerda(),nodo); // troca no pai a propria referencia pela do filho
             	return nodo.getFilhoDaEsquerda();
             } else {
                 p2 = nodo.getFilhoDaDireita();
@@ -230,11 +232,22 @@ public class Arvore<T extends Comparable<T>> {
         return nodo;
     } // fim do metodo excluir
 	
-	public void excluiFilho(Nodo<T> pai, Nodo<T> filho){
+	public void excluirFilho(Nodo<T> pai, Nodo<T> filho){
 		if(pai.getFilhoDaDireita() == filho)
 			pai.setFilhoDaDireita(null);
 		else
 			pai.setFilhoDaEsquerda(null);
+	}
+	
+	public void trocarPaiPeloFilho(Nodo<T> filho, Nodo<T> nodoPai){
+		Nodo<T> avo = nodoPai.getPai();
+		
+		filho.setPai(avo); // assume avo como pai
+		
+		if(avo.getFilhoDaDireita() == nodoPai) // caso o antigo pai fosse filho da direita
+			avo.setFilhoDaDireita(filho); // fiho assume como filho da direita
+		else
+			avo.setFilhoDaEsquerda(filho); // caso contrario sera filho da esquerda
 	}
 	
 	public void insertContact() {
