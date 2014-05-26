@@ -191,27 +191,39 @@ public class Arvore<T extends Comparable<T>> {
 		}
 	
 	public Nodo<T> excluir(Nodo<T> nodo, T key) {
-        Nodo<T> p, p2;
+        Nodo<T> p, p2, surrogate;
         if (key.equals(nodo.getChave())){
         	System.out.println("Chave bateu!");
             if (nodo.getFilhoDaEsquerda() == nodo.getFilhoDaDireita()) {
             	System.out.println("Nodo sem filhos!");
             	System.out.println("Meu pai e: " + nodo.getPai().getChave());
-            	excluirFilho(nodo.getPai(),nodo); // apaga o nodo atual excluindo a referencia no pai
+            	excludeSon(nodo.getPai(),nodo); // apaga o nodo atual excluindo a referencia no pai
                 return null;
             } else if (nodo.getFilhoDaEsquerda() == null) {
             	System.out.println("Meu pai e: " + nodo.getPai().getChave());
             	System.out.println("Nodo com filho a direita!");
             	System.out.println("Filho da direita: " + nodo.getFilhoDaDireita().getChave());
-            	trocarPaiPeloFilho(nodo.getFilhoDaDireita(),nodo); // troca no pai a propria referencia pela do filho
+            	changeFatherForSon(nodo.getFilhoDaDireita(),nodo); // troca no pai a propria referencia pela do filho
             	return nodo.getFilhoDaDireita();
             } else if (nodo.getFilhoDaDireita() == null) {
             	System.out.println("Meu pai e: " + nodo.getPai().getChave());
             	System.out.println("Nodo com filho a esquerda!");
             	System.out.println("Filho da esquerda: " + nodo.getFilhoDaEsquerda().getChave());
-            	trocarPaiPeloFilho(nodo.getFilhoDaEsquerda(),nodo); // troca no pai a propria referencia pela do filho
+            	changeFatherForSon(nodo.getFilhoDaEsquerda(),nodo); // troca no pai a propria referencia pela do filho
             	return nodo.getFilhoDaEsquerda();
             } else {
+            	
+            	surrogate = retrieveNode(nodo); // armazena o nodo que substituira o apagado
+            	changeFatherForSon(surrogate,nodo); // faz pai do nodo apontar para o substituto
+            	return surrogate;
+            	/*
+            	p= nodo.getFilhoDaEsquerda();
+            	p2 = nodo.getFilhoDaEsquerda();
+            	while (p.getFilhoDaDireita() != null) {
+                    p = p.getFilhoDaDireita();
+                }
+            	
+            	
                 p2 = nodo.getFilhoDaDireita();
                 p = nodo.getFilhoDaDireita();
                 while (p.getFilhoDaEsquerda() != null) {
@@ -222,7 +234,10 @@ public class Arvore<T extends Comparable<T>> {
                 System.out.println("Meu pai e: " + nodo.getPai().getChave());
                 System.out.println("Filho da esquerda: " + nodo.getFilhoDaEsquerda().getChave());
                 System.out.println("Filho da direita: " + nodo.getFilhoDaDireita().getChave());
+                
                 return p2;
+                */
+            	
             }
         } else if (key.compareTo(nodo.getChave()) < 0) {
             nodo.setFilhoDaDireita(excluir(nodo.getFilhoDaDireita(), key));
@@ -232,14 +247,22 @@ public class Arvore<T extends Comparable<T>> {
         return nodo;
     } // fim do metodo excluir
 	
-	public void excluirFilho(Nodo<T> pai, Nodo<T> filho){
+	   private Nodo<T> retrieveNode(Nodo<T> nodo)
+	   {
+	      while (nodo.getFilhoDaDireita() != null)
+	    	  nodo = nodo.getFilhoDaDireita();
+
+	      return nodo;
+	   }
+	
+	public void excludeSon(Nodo<T> pai, Nodo<T> filho){
 		if(pai.getFilhoDaDireita() == filho)
 			pai.setFilhoDaDireita(null);
 		else
 			pai.setFilhoDaEsquerda(null);
 	}
 	
-	public void trocarPaiPeloFilho(Nodo<T> filho, Nodo<T> nodoPai){
+	public void changeFatherForSon(Nodo<T> filho, Nodo<T> nodoPai){
 		Nodo<T> avo = nodoPai.getPai();
 		
 		filho.setPai(avo); // assume avo como pai
@@ -249,6 +272,8 @@ public class Arvore<T extends Comparable<T>> {
 		else
 			avo.setFilhoDaEsquerda(filho); // caso contrario sera filho da esquerda
 	}
+	
+	
 	
 	public void insertContact() {
 		String name = (view.readString("Nome"));
