@@ -1,0 +1,456 @@
+//http://www.devmedia.com.br/trabalhando-com-arvores-binarias-em-java/25749
+//http://www.mcs.csueastbay.edu/~bhecker/Previous%20Terms/CS-3240-Fall13/Examples/BinaryTree-2.java
+//http://rosettacode.org/wiki/Tree_traversal#Java
+//http://mattcb.blogspot.com.br/2012/12/binary-search-tree-serialize-and.html
+
+package com.ListaTelefonica.controller;
+
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.util.LinkedList;
+import java.util.Queue;
+import java.util.Scanner;
+
+import com.ListaTelefonica.model.*;
+import com.ListaTelefonica.view.*;
+
+public class Arvore<T extends Comparable<T>> {
+
+	public ConsoleView view;
+	private Nodo<T> root, current;
+
+	public Arvore(ConsoleView view) {
+		this.view = view;
+		this.root = null;
+	}
+
+	public Nodo<T> getRaiz() {
+		return root;
+	}
+
+	public void setRaiz(Nodo<T> raiz) {
+		this.root = raiz;
+	}
+
+	public boolean isEmpty() {
+		Boolean empty;
+		if (root != null)
+			empty = false;
+		else
+			empty = true;
+		return empty;
+	}
+
+	public void postorder() {
+		if (!isEmpty())
+			postorder(root);
+		else
+			System.out.println("Arvore vazia.");
+	}
+
+	public void postorder(Nodo<T> nodo) {
+		if (nodo != null) {
+			postorder(nodo.getFilhoDaEsquerda());
+			postorder(nodo.getFilhoDaDireita());
+
+			Pessoa<T> contato = (Pessoa<T>) nodo.getData();
+			view.printContato(contato.getNome(), contato.getTelefone());
+		}
+	}
+
+	public void preorder() {
+		if (!isEmpty())
+			preorder(root);
+		else
+			System.out.println("Arvore vazia.");
+	}
+
+	public void preorder(Nodo<T> nodo) {
+		if (nodo != null) {
+			Pessoa<T> contato = (Pessoa<T>) nodo.getData();
+			view.printContato(contato.getNome(), contato.getTelefone());
+
+			preorder(nodo.getFilhoDaEsquerda());
+			preorder(nodo.getFilhoDaDireita());
+		}
+	}
+
+	public void inorder() {
+		if (!isEmpty())
+			inorder(root);
+		else
+			System.out.println("Arvore vazia.");
+	}
+
+	public void inorder(Nodo<T> nodo) {
+		if (nodo != null) {
+			inorder(nodo.getFilhoDaEsquerda());
+
+			Pessoa<T> contato = (Pessoa<T>) nodo.getData();
+			view.printContato(contato.getNome(), contato.getTelefone());
+
+			inorder(nodo.getFilhoDaDireita());
+		}
+	}
+
+	public void levelorder() {
+		if (!isEmpty())
+			levelorder(root);
+		else
+			System.out.println("Arvore vazia.");
+	}
+
+	public void levelorder(Nodo<T> nodo) {
+		Queue<Nodo<T>> enfileraNodo = new LinkedList<Nodo<T>>();
+		if (nodo != null)
+			enfileraNodo.add(nodo);
+		while (!enfileraNodo.isEmpty()) {
+			Nodo<T> next = enfileraNodo.remove();
+
+			showContact(next);
+			// System.out.print(next.getData() + " ");
+
+			if (next.getFilhoDaEsquerda() != null) {
+				enfileraNodo.add(next.getFilhoDaEsquerda());
+			}
+			if (next.getFilhoDaDireita() != null) {
+				enfileraNodo.add(next.getFilhoDaDireita());
+			}
+		}
+	}
+
+	public void showRoot() {
+		T contactT = root.getData();
+		Pessoa contact = (Pessoa) contactT;
+		view.printContato(contact.getNome(), contact.getTelefone());
+	}
+
+	public void showContact(Nodo<T> nodo) {
+		T contactT = nodo.getData();
+		Pessoa contact = (Pessoa) contactT;
+		view.printContato(contact.getNome(), contact.getTelefone());
+	}
+
+	public void locateContact() {
+		Nodo<T> foundNode = null;
+		Pessoa<T> contact = null;
+
+		T key = (T) view.read("Nome do contato").toLowerCase();
+
+		foundNode = locateContact(root, key);
+
+		if (foundNode != null) {
+			contact = (Pessoa<T>) foundNode.getData();
+			view.printContato(contact.getNome(), contact.getTelefone());
+		} else
+			view.printContato("Contato nao encontrado",
+					"Telefone nao encontrado");
+	}
+
+	public Nodo<T> locateContact(Nodo<T> nodo, T key) {
+
+		if (nodo == null || key.equals(nodo.getChave()))
+			return nodo;
+		else if (key.compareTo(nodo.getChave()) < 0)
+			return locateContact(nodo.getFilhoDaEsquerda(), key);
+		else
+			return locateContact(nodo.getFilhoDaDireita(), key);
+	}
+
+	public void removeContato() {
+		Nodo<T> foundNode = null;
+		T key = (T) view.read("Nome do contato").toLowerCase();
+
+		foundNode = locateContact(root, key);
+		
+		if (foundNode != null) {
+			
+			if(foundNode.getFilhoDaEsquerda().getData() == null
+				&& foundNode.getFilhoDaDireita().getData() == null){
+				System.out.println("Nao tem filhos!");
+			}
+		}
+	}
+	
+	public void deleteContact(){
+		Nodo<T> foundNode = null;
+
+		T key = (T) view.read("Nome do contato a excluir").toLowerCase();
+
+		foundNode = locateContact(root, key);
+		
+		if (foundNode != null) {
+			foundNode = excluir(foundNode, key);
+			//System.out.println("Chave do nodo depois de excluir: " + foundNode.getChave());
+			view.printContato("Contato excluido com sucesso!",
+					"Telefone excluido!");
+		} else
+			view.printContato("Contato nao encontrado","Telefone nao encontrado");
+		}
+	
+	public Nodo<T> excluir(Nodo<T> nodo, T key) {
+        Nodo<T> p, p2, surrogate;
+        if (key.equals(nodo.getChave())){
+        	System.out.println("Chave bateu!");
+            if (nodo.getFilhoDaEsquerda() == nodo.getFilhoDaDireita()) {
+            	System.out.println("Nodo sem filhos!");
+            	System.out.println("Meu pai e: " + nodo.getPai().getChave());
+            	excludeSon(nodo.getPai(),nodo); // apaga o nodo atual excluindo a referencia no pai
+                return null;
+            } else if (nodo.getFilhoDaEsquerda() == null) {
+            	System.out.println("Meu pai e: " + nodo.getPai().getChave());
+            	System.out.println("Nodo com filho a direita!");
+            	System.out.println("Filho da direita: " + nodo.getFilhoDaDireita().getChave());
+            	changeFatherForSon(nodo.getFilhoDaDireita(),nodo); // troca no pai a propria referencia pela do filho
+            	return nodo.getFilhoDaDireita();
+            } else if (nodo.getFilhoDaDireita() == null) {
+            	System.out.println("Meu pai e: " + nodo.getPai().getChave());
+            	System.out.println("Nodo com filho a esquerda!");
+            	System.out.println("Filho da esquerda: " + nodo.getFilhoDaEsquerda().getChave());
+            	changeFatherForSon(nodo.getFilhoDaEsquerda(),nodo); // troca no pai a propria referencia pela do filho
+            	return nodo.getFilhoDaEsquerda();
+            } else {
+            	
+            	surrogate = retrieveNode(nodo); // armazena o nodo que substituira o apagado
+            	changeFatherForSon(surrogate,nodo); // faz pai do nodo apontar para o substituto
+            	return surrogate;
+            	/*
+            	p= nodo.getFilhoDaEsquerda();
+            	p2 = nodo.getFilhoDaEsquerda();
+            	while (p.getFilhoDaDireita() != null) {
+                    p = p.getFilhoDaDireita();
+                }
+            	
+            	
+                p2 = nodo.getFilhoDaDireita();
+                p = nodo.getFilhoDaDireita();
+                while (p.getFilhoDaEsquerda() != null) {
+                    p = p.getFilhoDaEsquerda();
+                }
+                p.setFilhoDaEsquerda(nodo.getFilhoDaEsquerda());
+                System.out.println("Nodo com dois filhos!");
+                System.out.println("Meu pai e: " + nodo.getPai().getChave());
+                System.out.println("Filho da esquerda: " + nodo.getFilhoDaEsquerda().getChave());
+                System.out.println("Filho da direita: " + nodo.getFilhoDaDireita().getChave());
+                
+                return p2;
+                */
+            	
+            }
+        } else if (key.compareTo(nodo.getChave()) < 0) {
+            nodo.setFilhoDaDireita(excluir(nodo.getFilhoDaDireita(), key));
+        } else {
+            nodo.setFilhoDaEsquerda(excluir(nodo.getFilhoDaEsquerda(), key));
+        }
+        return nodo;
+    } // fim do metodo excluir
+	
+	   private Nodo<T> retrieveNode(Nodo<T> nodo)
+	   {
+	      while (nodo.getFilhoDaDireita() != null)
+	    	  nodo = nodo.getFilhoDaDireita();
+
+	      return nodo;
+	   }
+	
+	public void excludeSon(Nodo<T> pai, Nodo<T> filho){
+		if(pai.getFilhoDaDireita() == filho)
+			pai.setFilhoDaDireita(null);
+		else
+			pai.setFilhoDaEsquerda(null);
+	}
+	
+	public void changeFatherForSon(Nodo<T> filho, Nodo<T> nodoPai){
+		Nodo<T> avo = nodoPai.getPai();
+		
+		filho.setPai(avo); // assume avo como pai
+		
+		if(avo.getFilhoDaDireita() == nodoPai) // caso o antigo pai fosse filho da direita
+			avo.setFilhoDaDireita(filho); // fiho assume como filho da direita
+		else
+			avo.setFilhoDaEsquerda(filho); // caso contrario sera filho da esquerda
+	}
+	
+	
+	
+	public void insertContact() {
+		String name = (view.readString("Nome"));
+		String phone = (view.readString("Telefone"));
+
+		Pessoa<T> contact = new Pessoa(name);
+		contact.setTelefone(phone);
+
+		T key = (T) name.toLowerCase(); // armazena a chave como o nome em
+										// lowercase
+
+		insertContact(key, (T) contact);
+	}
+
+	public void insertContact(T key, T data) {
+		Nodo<T> novo = new Nodo<T>(key, data);
+
+		if (root == null) { // caso nao existam nodos
+			// define ao nodo novo o nodo de entrada como pai
+			novo.setPai(novo);
+			root = novo; // nodo novo sera a raiz
+		} else {
+			Nodo<T> atual = root;// posiciona na raiz
+			Nodo<T> pai; // declara variavel pai
+
+			while (true) { // While perpetuo
+				pai = atual; // pai e atual comecam valendo raiz
+
+				// compara para saber se deve ir a esquerda do nodo
+				if (key.compareTo(atual.getChave()) < 0) {
+					// se encaminha a esquerda
+					pai = atual; // armazena o nodo de entrada (pai)
+					atual = atual.getFilhoDaEsquerda(); // avanca para o filho da esquerda
+
+					// se nao houver filho da esquerda
+					if (atual == null) {
+						// define ao nodo novo o nodo de entrada como pai
+						novo.setPai(pai);
+						// define no nodo pai que o filho da esquerda e o nodo novo
+						pai.setFilhoDaEsquerda(novo); // atribui o nodo novo como filho da esquerda
+						return; // sai do metodo
+					}
+				} // fim if < 0
+					// Caso a comparacao encaminhe a direita
+				else {
+					pai = atual; // armazena o nodo de entrada (pai)
+					atual = atual.getFilhoDaDireita(); // avanca para o filho da
+														// direita
+
+					// se nao houver filho da direita
+					if (atual == null) {
+						// define ao nodo novo o nodo de entrada como pai
+						novo.setPai(pai);
+						// define no nodo pai que o filho da direita e o nodo novo
+						pai.setFilhoDaDireita(novo);
+						return; // sai do metodo
+					}
+				} // fim do else
+			} // fim do while perpetuo
+		}
+	}// fim do metodo insereNodo
+
+	public String preOrderIterative() {
+		StringBuilder sb = new StringBuilder(); // cria um novo stringbuilder
+												// (concatenador de string)
+		preOrderIterative(root, sb); // chama o metodo sobrecarregado
+		return sb.toString(); // retorna a string concatenada
+	}
+
+	private void preOrderIterative(Nodo<T> nodo, StringBuilder sb) {
+
+		// caso o nodo seja nulo
+		if (nodo == null) {
+			// sb.append("#" + "\n"); // insere um sustenido ao inves do contato
+			return;
+		}
+
+		// armazena os dados do nodo em contact para separar nome e telefone
+		Pessoa<T> contact = (Pessoa<T>) nodo.getData();
+		sb.append(contact.getNome() + "\n"); // insere o nome no stringbuilder
+		sb.append(contact.getTelefone() + "\n"); // insere o telefone no stringbuilder
+
+		// chama recursivamente o metodo encaminhando para o nodo da esquerda
+		preOrderIterative(nodo.getFilhoDaEsquerda(), sb);
+		// chama recursivamente o metodo encaminhando para o nodo da direita
+		preOrderIterative(nodo.getFilhoDaDireita(), sb);
+	}
+
+	public void saveFile(String filename) {
+		FileWriter arq = null; // declara o arquivo de saida
+		try {
+			// instancia o arquivo com o nome recebido
+			arq = new FileWriter(filename, false);
+
+			// grava o arquivo com o retorno do metodo preOrderIterative
+			arq.write(preOrderIterative());
+
+		} catch (IOException e) {
+			// caso haja excecao com o arquivo
+			view.message(e.getMessage());
+		} finally {
+			if (arq != null)
+				try {
+					// ao final do processo fecha o streaming
+					arq.close();
+				} catch (IOException e) {
+					// caso haja excecao com o arquivo
+					view.message(e.getMessage());
+				}
+		}
+	}
+
+	public void loadFile(String filename) {
+		try {
+			// declara e instancia o scanner fornecendo o arquivo como entrada
+			Scanner arq = new Scanner(new FileReader(filename));
+
+			while (arq.hasNext()) { // enquanto existir prox linha
+				String name = arq.nextLine(); // recebe a linha atual na string
+												// name
+				String phone = arq.nextLine(); // recebe a linha atual na string
+												// phone
+
+				Pessoa<T> contact = new Pessoa(name); // cria e instancia o
+														// objeto contact
+				contact.setTelefone(phone); // adiciona o telefone ao objeto
+
+				// converte o nome para minusculas e armazena na variavel key
+				T key = (T) name.toLowerCase();
+
+				// se o nome nao iniciar com sustenido chama o metodo para
+				// inserir
+				if (!name.startsWith("#"))
+					insertContact(key, (T) contact);
+				/*
+				 * else name = arq.nextLine(); // inserido para evitar pegar
+				 * linhas com #
+				 */
+			}
+		} catch (FileNotFoundException e) { // caso nao encontre o arquivo
+			view.logError(e.getMessage());
+		}
+	}
+
+
+	/*
+	 * private Nodo<Pessoa> procuraContato(ListaEncadeada<Pessoa> lista, String
+	 * chave) { Nodo<Pessoa> iter = lista.getHead(); while (iter != null) {
+	 * Pessoa contato = iter.getData(); String nome =
+	 * contato.getNome().toLowerCase(); if (nome.startsWith(chave)) { return
+	 * iter; } iter = iter.getNext(); } return null; }
+	 * 
+	 * private Pessoa procuraContatoBinario(String chave) { int limiteSuperior =
+	 * vetorPessoas.length-1; int limiteInferior = 0; int contador=0; int
+	 * indice=0;//utilizado para fins de comparacao com a pesquisa linear int
+	 * meio=0; Pessoa atual=null;
+	 * 
+	 * do{ if (limiteSuperior < 0){ atual=null; }else{
+	 * 
+	 * contador++;//incrementa o contador das buscas efetuadas meio =
+	 * (limiteInferior + limiteSuperior)/2;//calcula o meio do vetor para
+	 * comecar a busca System.out.println("Meio: " + meio); atual =
+	 * vetorPessoas[meio];//armazena a pessoa da casa do meio
+	 * 
+	 * int cmp =
+	 * chave.compareTo(vetorPessoas[meio].getNome().substring(0,1));//compara o
+	 * nome da pessoa com a chave (letra inicial)
+	 * 
+	 * if (cmp == 0){ currentBinario = atual; //se o inicial for a mesma retorna
+	 * atual = null; indice=meio;//pois a leitura e sempre da posicao "do meio"
+	 * showContatoBinario(contador, indice);//como esse metodo nao trabalha com
+	 * o tipo Nodo, possui um show proprio //return atual; } if (cmp < 0)
+	 * limiteSuperior=meio-1;//se o inicial for menor reduz a pesquisa a
+	 * primeira metade if (cmp > 0) limiteInferior = meio+1;//se o inicial for
+	 * maior reduz a pesquisa a segunda metade
+	 * 
+	 * } }while (atual != null); return null; }
+	 */
+
+}
